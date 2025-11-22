@@ -1,0 +1,329 @@
+---
+import Layout from '../components/Layout.astro';
+---
+
+<Layout title="作品社区 - GameCode Lab">
+  <div class="min-h-screen bg-gray-50">
+    <!-- 顶部导航 -->
+    <nav class="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
+      <div class="mx-auto max-w-7xl px-4 py-4">
+        <div class="flex items-center justify-between">
+          <a href="/" class="flex items-center gap-2 text-xl font-bold text-gray-900">
+            <span class="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2 text-white">
+              🎮
+            </span>
+            GameCode Lab
+          </a>
+          
+          <div class="flex items-center gap-4">
+            <a href="/learn" class="text-gray-600 transition hover:text-gray-900">
+              学习中心
+            </a>
+            <button
+              id="createProjectBtn"
+              class="rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-2 text-sm font-semibold text-white transition hover:from-blue-600 hover:to-purple-700"
+            >
+              ✨ 发布作品
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-12 text-white">
+      <div class="mx-auto max-w-7xl text-center">
+        <h1 class="mb-4 text-4xl font-bold">🎨 作品展示社区</h1>
+        <p class="text-xl text-white/90">
+          分享你的创意，发现精彩作品，与全球开发者交流学习
+        </p>
+      </div>
+    </section>
+
+    <!-- 筛选和排序 -->
+    <div class="sticky top-[73px] z-30 border-b border-gray-200 bg-white py-4">
+      <div class="mx-auto max-w-7xl px-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <!-- 标签过滤 -->
+          <div class="flex flex-wrap gap-2">
+            <button class="rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-200">
+              全部
+            </button>
+            <button class="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200">
+              HTML5
+            </button>
+            <button class="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200">
+              CSS 动画
+            </button>
+            <button class="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200">
+              JavaScript
+            </button>
+            <button class="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200">
+              游戏
+            </button>
+            <button class="rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200">
+              工具
+            </button>
+          </div>
+
+          <!-- 排序 -->
+          <select
+            id="sortSelect"
+            class="rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          >
+            <option value="latest">最新发布</option>
+            <option value="popular">最受欢迎</option>
+            <option value="views">浏览最多</option>
+            <option value="ai_score">AI 评分</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 精选作品轮播 -->
+    <section class="py-8 px-4">
+      <div class="mx-auto max-w-7xl">
+        <h2 class="mb-6 flex items-center gap-2 text-2xl font-bold text-gray-900">
+          <span>⭐</span>
+          本周精选作品
+        </h2>
+        <div id="featuredProjectsContainer" class="grid gap-6 md:grid-cols-3">
+          <!-- 精选作品卡片 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 所有作品网格 -->
+    <section class="py-8 px-4">
+      <div class="mx-auto max-w-7xl">
+        <h2 class="mb-6 text-2xl font-bold text-gray-900">
+          探索更多作品
+        </h2>
+        <div id="projectsContainer" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <!-- 作品卡片将动态加载 -->
+        </div>
+
+        <!-- 加载更多 -->
+        <div class="mt-8 text-center">
+          <button
+            id="loadMoreBtn"
+            class="rounded-lg bg-gray-200 px-6 py-3 font-medium text-gray-700 transition hover:bg-gray-300"
+          >
+            加载更多
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI 每日推荐 -->
+    <section class="py-8 px-4 bg-gradient-to-br from-purple-50 to-blue-50">
+      <div class="mx-auto max-w-7xl">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900">
+            <span>🤖</span>
+            AI 推荐今日必看
+          </h2>
+          <button class="text-sm text-blue-600 hover:text-blue-700">
+            查看全部 →
+          </button>
+        </div>
+        <div id="aiRecommendedContainer" class="grid gap-6 md:grid-cols-2">
+          <!-- AI 推荐作品 -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 作品详情模态框 -->
+  <div id="projectModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm">
+    <div class="flex min-h-screen items-center justify-center p-4">
+      <div id="projectModalContent" class="w-full max-w-6xl rounded-2xl bg-white p-8 shadow-2xl">
+        <!-- 内容将动态加载 -->
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // @ts-nocheck
+  import { supabase } from '../lib/supabase';
+
+  let currentPage = 1;
+  const pageSize = 12;
+
+  // 加载作品
+  async function loadProjects(page = 1, sortBy = 'latest') {
+    const container = document.getElementById('projectsContainer');
+    if (!container) return;
+    
+    try {
+      let query = supabase
+        .from('user_projects')
+        .select('*')
+        .eq('is_public', true)
+        .range((page - 1) * pageSize, page * pageSize - 1);
+
+      // 排序
+      switch (sortBy) {
+        case 'latest':
+          query = query.order('created_at', { ascending: false });
+          break;
+        case 'popular':
+          query = query.order('likes_count', { ascending: false });
+          break;
+        case 'views':
+          query = query.order('views_count', { ascending: false });
+          break;
+        case 'ai_score':
+          query = query.order('ai_score', { ascending: false, nullsFirst: false });
+          break;
+      }
+
+      const { data: projects, error } = await query;
+
+      if (error) throw error;
+
+      if (projects && projects.length > 0) {
+        if (page === 1) {
+          container.innerHTML = '';
+        }
+        
+        // 简化版：直接渲染 HTML
+        projects.forEach((project) => {
+          const projectCard = document.createElement('div');
+          projectCard.className = 'rounded-xl border border-gray-200 bg-white p-6 shadow-md transition hover:shadow-lg cursor-pointer';
+          projectCard.innerHTML = `
+            <h3 class="text-xl font-bold mb-2">${project.title}</h3>
+            <p class="text-gray-600 mb-4">${project.description || ''}</p>
+            <div class="flex items-center gap-4 text-sm text-gray-500">
+              <span>❤️ ${project.likes_count}</span>
+              <span>👁️ ${project.views_count}</span>
+              <span>💬 ${project.comments_count}</span>
+            </div>
+          `;
+          projectCard.onclick = () => showProjectDetail(project);
+          container.appendChild(projectCard);
+        });
+      }
+    } catch (error) {
+      console.error('Error loading projects:', error);
+    }
+  }
+
+  // 点赞
+  async function handleLike(projectId) {
+    console.log('Like project:', projectId);
+    alert('点赞功能开发中...');
+  }
+
+  // 显示作品详情
+  function showProjectDetail(project) {
+    const modal = document.getElementById('projectModal');
+    const content = document.getElementById('projectModalContent');
+    if (!modal || !content) return;
+
+    // 增加浏览计数
+    supabase.rpc('increment_project_views', { project_id: project.id });
+
+    content.innerHTML = `
+      <div class="relative">
+        <button
+          onclick="document.getElementById('projectModal').classList.add('hidden')"
+          class="absolute right-0 top-0 text-gray-400 hover:text-gray-600"
+        >
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+
+        <div class="mb-6">
+          <h2 class="mb-2 text-3xl font-bold text-gray-900">${project.title}</h2>
+          ${project.description ? `<p class="text-gray-600">${project.description}</p>` : ''}
+        </div>
+
+        <!-- 预览区域 -->
+        <div class="mb-6 rounded-xl border border-gray-200 bg-white shadow-lg overflow-hidden">
+          <div class="text-center p-8 text-gray-500">
+            预览功能开发中...
+          </div>
+        </div>
+
+        <!-- 元数据 -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+          <div class="rounded-lg bg-gray-50 p-4 text-center">
+            <div class="mb-1 text-2xl">❤️</div>
+            <div class="text-2xl font-bold text-gray-900">${project.likes_count}</div>
+            <div class="text-xs text-gray-500">点赞</div>
+          </div>
+          <div class="rounded-lg bg-gray-50 p-4 text-center">
+            <div class="mb-1 text-2xl">👁️</div>
+            <div class="text-2xl font-bold text-gray-900">${project.views_count}</div>
+            <div class="text-xs text-gray-500">浏览</div>
+          </div>
+          <div class="rounded-lg bg-gray-50 p-4 text-center">
+            <div class="mb-1 text-2xl">💬</div>
+            <div class="text-2xl font-bold text-gray-900">${project.comments_count}</div>
+            <div class="text-xs text-gray-500">评论</div>
+          </div>
+          ${project.ai_score ? `
+            <div class="rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 p-4 text-center">
+              <div class="mb-1 text-2xl">⭐</div>
+              <div class="text-2xl font-bold text-purple-600">${project.ai_score}</div>
+              <div class="text-xs text-purple-500">AI 评分</div>
+            </div>
+          ` : ''}
+        </div>
+
+        ${project.ai_feedback ? `
+          <div class="mb-6 rounded-xl bg-purple-50 p-6 border border-purple-100">
+            <h3 class="mb-3 flex items-center gap-2 text-lg font-bold text-purple-900">
+              <span>🤖</span>
+              AI 评价
+            </h3>
+            <p class="text-purple-700">${project.ai_feedback}</p>
+          </div>
+        ` : ''}
+
+        <!-- 按钮 -->
+        <div class="flex gap-3">
+          <button class="flex-1 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700">
+            ❤️ 点赞
+          </button>
+          <button class="flex-1 rounded-lg bg-gray-200 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-300">
+            💬 评论
+          </button>
+          <button class="rounded-lg bg-gray-200 px-6 py-3 font-semibold text-gray-700 transition hover:bg-gray-300">
+            🔗
+          </button>
+        </div>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML.replace(/"/g, '&quot;');
+  }
+
+  // 排序切换
+  document.getElementById('sortSelect')?.addEventListener('change', (e) => {
+    const sortBy = (e.target as HTMLSelectElement).value;
+    currentPage = 1;
+    loadProjects(1, sortBy);
+  });
+
+  // 加载更多
+  document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
+    currentPage++;
+    loadProjects(currentPage);
+  });
+
+  // 初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    loadProjects(1);
+  });
+</script>
+

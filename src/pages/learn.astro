@@ -1,0 +1,206 @@
+---
+import Layout from '../components/Layout.astro';
+---
+
+<Layout title="学习中心 - GameCode Lab">
+  <div class="min-h-screen bg-gray-50">
+    <!-- 顶部导航栏 -->
+    <nav class="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
+      <div class="mx-auto max-w-7xl px-4 py-4">
+        <div class="flex items-center justify-between">
+          <a href="/" class="flex items-center gap-2 text-xl font-bold text-gray-900">
+            <span class="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2 text-white">
+              🎮
+            </span>
+            GameCode Lab
+          </a>
+          
+          <div class="flex items-center gap-4">
+            <button id="aiAssistantBtn" class="flex items-center gap-2 rounded-lg bg-purple-100 px-4 py-2 text-purple-700 transition hover:bg-purple-200">
+              <span>✨</span>
+              <span class="hidden sm:inline">AI 助教</span>
+            </button>
+            <div id="userProfileBtn" class="cursor-pointer"></div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <div class="mx-auto max-w-7xl px-4 py-8">
+      <!-- 用户信息卡片 -->
+      <div class="mb-8">
+        <div id="userProfileCard"></div>
+      </div>
+
+      <!-- 学习进度概览 -->
+      <div class="mb-8">
+        <h2 class="mb-4 text-2xl font-bold text-gray-900">📊 学习概览</h2>
+        <div class="grid gap-6 md:grid-cols-4">
+          <div class="rounded-xl bg-white p-6 shadow-md">
+            <div class="mb-2 flex items-center gap-2 text-blue-600">
+              <span class="text-2xl">📚</span>
+              <span class="text-sm font-medium">完成课程</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900" id="completedLessons">0</p>
+            <p class="mt-1 text-xs text-gray-500">/ 25 课程</p>
+          </div>
+
+          <div class="rounded-xl bg-white p-6 shadow-md">
+            <div class="mb-2 flex items-center gap-2 text-green-600">
+              <span class="text-2xl">🎯</span>
+              <span class="text-sm font-medium">完成挑战</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900" id="completedChallenges">0</p>
+            <p class="mt-1 text-xs text-gray-500">/ 50 挑战</p>
+          </div>
+
+          <div class="rounded-xl bg-white p-6 shadow-md">
+            <div class="mb-2 flex items-center gap-2 text-yellow-600">
+              <span class="text-2xl">⭐</span>
+              <span class="text-sm font-medium">经验值</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900" id="totalXP">0</p>
+            <p class="mt-1 text-xs text-gray-500">XP</p>
+          </div>
+
+          <div class="rounded-xl bg-white p-6 shadow-md">
+            <div class="mb-2 flex items-center gap-2 text-purple-600">
+              <span class="text-2xl">🏆</span>
+              <span class="text-sm font-medium">成就徽章</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900" id="totalAchievements">0</p>
+            <p class="mt-1 text-xs text-gray-500">个成就</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 学习路径 -->
+      <div class="mb-8">
+        <h2 class="mb-4 text-2xl font-bold text-gray-900">🎓 学习路径</h2>
+        <div id="courseModulesContainer" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <!-- 课程卡片将由 React 渲染 -->
+        </div>
+      </div>
+
+      <!-- 每日挑战 -->
+      <div class="mb-8">
+        <div class="rounded-xl bg-gradient-to-r from-orange-400 to-red-500 p-8 text-white shadow-xl">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="mb-2 flex items-center gap-2 text-2xl font-bold">
+                <span>🔥</span>
+                每日挑战
+              </h3>
+              <p class="mb-4 text-white/90">
+                完成今日挑战，获得额外奖励！
+              </p>
+              <button class="rounded-lg bg-white px-6 py-2 font-semibold text-orange-600 transition hover:bg-gray-100">
+                接受挑战
+              </button>
+            </div>
+            <div class="hidden text-8xl md:block">🎯</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最近学习 -->
+      <div>
+        <h2 class="mb-4 text-2xl font-bold text-gray-900">⏱️ 继续学习</h2>
+        <div id="recentLessonsContainer" class="grid gap-6 md:grid-cols-2">
+          <!-- 最近学习的课程 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- AI 助教浮动按钮 -->
+    <button
+      id="floatingAIBtn"
+      class="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-600 text-3xl text-white shadow-2xl transition-all hover:scale-110 hover:shadow-3xl"
+      title="AI 助教"
+    >
+      ✨
+    </button>
+  </div>
+
+  <!-- React 组件容器 -->
+  <div id="aiAssistantRoot"></div>
+</Layout>
+
+<script>
+  // @ts-nocheck
+  import { supabase } from '../lib/supabase';
+
+  // 简化：AI 助教按钮
+  document.getElementById('aiAssistantBtn')?.addEventListener('click', () => {
+    alert('AI 助教功能开发中...');
+  });
+
+  document.getElementById('floatingAIBtn')?.addEventListener('click', () => {
+    alert('AI 助教功能开发中...');
+  });
+
+  // 加载课程模块
+  async function loadCourseModules() {
+    const container = document.getElementById('courseModulesContainer');
+    if (!container) return;
+
+    try {
+      const { data: modules, error } = await supabase
+        .from('course_modules')
+        .select('*')
+        .eq('is_published', true)
+        .order('order_index');
+
+      if (error) throw error;
+
+      if (modules && modules.length > 0) {
+        container.innerHTML = '';
+        modules.forEach((module) => {
+          const card = document.createElement('div');
+          card.className = 'rounded-xl bg-white p-6 shadow-lg transition hover:shadow-xl cursor-pointer';
+          card.innerHTML = `
+            <div class="text-4xl mb-4">${module.icon || '📚'}</div>
+            <h3 class="text-xl font-bold mb-2">${module.title}</h3>
+            <p class="text-gray-600 mb-4">${module.description || ''}</p>
+            <button class="w-full rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+              开始学习
+            </button>
+          `;
+          card.onclick = () => {
+            window.location.href = `/course/${module.slug}`;
+          };
+          container.appendChild(card);
+        });
+      } else {
+        container.innerHTML = '<p class="text-gray-500">暂无课程</p>';
+      }
+    } catch (error) {
+      console.error('Error loading courses:', error);
+      container.innerHTML = '<p class="text-red-500">加载课程失败</p>';
+    }
+  }
+
+  // 更新统计数据
+  async function updateStats() {
+    // 简化：显示默认值
+    const stats = {
+      completedLessons: 0,
+      completedChallenges: 0,
+      totalXP: 0,
+      totalAchievements: 0
+    };
+    
+    document.getElementById('completedLessons').textContent = stats.completedLessons.toString();
+    document.getElementById('completedChallenges').textContent = stats.completedChallenges.toString();
+    document.getElementById('totalXP').textContent = stats.totalXP.toString();
+    document.getElementById('totalAchievements').textContent = stats.totalAchievements.toString();
+  }
+
+  // 初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCourseModules();
+    updateStats();
+  });
+</script>
+

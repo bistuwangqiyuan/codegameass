@@ -1,0 +1,451 @@
+---
+import Layout from '../../components/Layout.astro';
+
+export const prerender = false;
+---
+
+<Layout title="编程挑战 - GameCode Lab">
+  <div class="flex h-screen flex-col bg-gray-900">
+    <!-- 顶部工具栏 -->
+    <div class="flex items-center justify-between border-b border-gray-700 bg-gray-800 px-6 py-3">
+      <div class="flex items-center gap-4">
+        <a
+          href="/learn"
+          class="flex items-center gap-2 text-gray-300 transition hover:text-white"
+        >
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          返回
+        </a>
+        
+        <div class="h-6 w-px bg-gray-600"></div>
+        
+        <div>
+          <h1 class="text-lg font-bold text-white" id="challengeTitle">加载中...</h1>
+          <p class="text-xs text-gray-400" id="challengeType"></p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- 计时器 -->
+        <div class="flex items-center gap-2 rounded-lg bg-gray-700 px-4 py-2 text-white">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span id="timer" class="font-mono">00:00</span>
+        </div>
+
+        <!-- 奖励信息 -->
+        <div class="flex items-center gap-3 text-sm">
+          <div class="flex items-center gap-1 text-yellow-400">
+            <span>⭐</span>
+            <span id="xpReward">0</span>
+            <span class="text-gray-400">XP</span>
+          </div>
+          <div class="flex items-center gap-1 text-yellow-400">
+            <span>🪙</span>
+            <span id="coinReward">0</span>
+            <span class="text-gray-400">金币</span>
+          </div>
+        </div>
+
+        <!-- AI 助教按钮 -->
+        <button
+          id="aiHelpBtn"
+          class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-purple-700"
+        >
+          ✨ AI 助教
+        </button>
+
+        <!-- 提交按钮 -->
+        <button
+          id="submitBtn"
+          class="rounded-lg bg-green-600 px-6 py-2 text-sm font-medium text-white transition hover:bg-green-700"
+        >
+          提交答案
+        </button>
+      </div>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <div class="flex flex-1 overflow-hidden">
+      <!-- 左侧：题目说明 -->
+      <div class="w-1/3 overflow-y-auto border-r border-gray-700 bg-gray-800 p-6">
+        <!-- 难度标签 -->
+        <div class="mb-4">
+          <span id="difficultyBadge" class="rounded-full px-3 py-1 text-xs font-medium"></span>
+        </div>
+
+        <!-- 题目描述 -->
+        <div class="mb-6">
+          <h2 class="mb-2 text-lg font-bold text-white">📝 题目描述</h2>
+          <div id="challengeDescription" class="text-sm text-gray-300"></div>
+        </div>
+
+        <!-- 具体要求 -->
+        <div class="mb-6">
+          <h2 class="mb-2 text-lg font-bold text-white">✅ 任务要求</h2>
+          <div id="challengeInstructions" class="text-sm text-gray-300 whitespace-pre-wrap"></div>
+        </div>
+
+        <!-- 提示系统 -->
+        <div class="mb-6">
+          <h2 class="mb-2 text-lg font-bold text-white">💡 提示</h2>
+          <div id="hintsContainer" class="space-y-2">
+            <!-- 提示将动态加载 -->
+          </div>
+          <button
+            id="getHintBtn"
+            class="mt-3 w-full rounded-lg bg-yellow-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-yellow-700"
+          >
+            获取提示 (-5 金币)
+          </button>
+        </div>
+
+        <!-- 测试用例 -->
+        <div>
+          <h2 class="mb-2 text-lg font-bold text-white">🧪 测试用例</h2>
+          <div id="testCasesContainer" class="space-y-2 text-sm text-gray-300">
+            <!-- 测试用例将动态加载 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：代码编辑器 -->
+      <div class="flex-1">
+        <div id="codeEditorContainer" class="h-full"></div>
+      </div>
+    </div>
+
+    <!-- 结果模态框 -->
+    <div id="resultModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div class="w-full max-w-lg rounded-2xl bg-white p-8 shadow-2xl">
+        <div id="resultContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 助教 -->
+  <div id="aiAssistantRoot"></div>
+</Layout>
+
+<script>
+  // @ts-nocheck
+  import { supabase } from '../../lib/supabase';
+
+  // 获取挑战 ID
+  const challengeId = window.location.pathname.split('/').pop();
+  let challenge: any = null;
+  let startTime = Date.now();
+  let timerInterval: number;
+  let hintsUsed = 0;
+
+  // 初始化代码编辑器
+  const editorContainer = document.getElementById('codeEditorContainer');
+  if (editorContainer) {
+    const root = createRoot(editorContainer);
+    root.render(
+      createElement(CodeEditor, {
+        challengeId,
+        onSave: handleSave,
+        onRun: handleRun
+      })
+    );
+  }
+
+  // AI 助教
+  const aiAssistantRoot = document.getElementById('aiAssistantRoot');
+  let aiOpen = false;
+  if (aiAssistantRoot) {
+    const root = createRoot(aiAssistantRoot);
+    const renderAI = (isOpen: boolean) => {
+      root.render(createElement(AIAssistant, {
+        isOpen,
+        onClose: () => {
+          aiOpen = false;
+          renderAI(false);
+        }
+      }));
+    };
+    
+    document.getElementById('aiHelpBtn')?.addEventListener('click', () => {
+      aiOpen = true;
+      renderAI(true);
+    });
+    
+    renderAI(false);
+  }
+
+  // 加载挑战数据
+  async function loadChallenge() {
+    try {
+      const { data, error } = await supabase
+        .from('challenges')
+        .select('*')
+        .eq('id', challengeId)
+        .single();
+
+      if (error) throw error;
+      challenge = data;
+
+      // 更新 UI
+      document.getElementById('challengeTitle')!.textContent = challenge.title;
+      document.getElementById('challengeType')!.textContent = getTypeLabel(challenge.challenge_type);
+      document.getElementById('challengeDescription')!.textContent = challenge.description;
+      document.getElementById('challengeInstructions')!.textContent = challenge.instructions;
+      document.getElementById('xpReward')!.textContent = challenge.xp_reward;
+      document.getElementById('coinReward')!.textContent = challenge.coin_reward;
+
+      // 难度标签
+      const difficultyBadge = document.getElementById('difficultyBadge')!;
+      const difficultyConfig: any = {
+        easy: { label: '简单', class: 'bg-green-500 text-white' },
+        medium: { label: '中等', class: 'bg-yellow-500 text-white' },
+        hard: { label: '困难', class: 'bg-orange-500 text-white' },
+        expert: { label: '专家', class: 'bg-red-500 text-white' }
+      };
+      const config = difficultyConfig[challenge.difficulty];
+      difficultyBadge.textContent = config.label;
+      difficultyBadge.className = `rounded-full px-3 py-1 text-xs font-medium ${config.class}`;
+
+      // 设置起始代码
+      const { setAllCode } = useEditorStore.getState();
+      setAllCode({
+        html: challenge.starter_html || '',
+        css: challenge.starter_css || '',
+        js: challenge.starter_js || ''
+      });
+
+      // 加载提示和测试用例
+      loadHints();
+      loadTestCases();
+
+      // 启动计时器
+      startTimer();
+    } catch (error) {
+      console.error('Error loading challenge:', error);
+      alert('加载挑战失败');
+    }
+  }
+
+  function getTypeLabel(type: string): string {
+    const labels: any = {
+      code_completion: '代码补全',
+      bug_fix: '修复Bug',
+      build_from_scratch: '从零构建',
+      quiz: '知识问答',
+      boss_challenge: 'Boss挑战'
+    };
+    return labels[type] || type;
+  }
+
+  function loadHints() {
+    if (!challenge.hints || challenge.hints.length === 0) return;
+    
+    const container = document.getElementById('hintsContainer')!;
+    container.innerHTML = '<p class="text-gray-400 text-sm">暂无已解锁的提示</p>';
+  }
+
+  function loadTestCases() {
+    if (!challenge.test_cases || challenge.test_cases.length === 0) return;
+    
+    const container = document.getElementById('testCasesContainer')!;
+    container.innerHTML = challenge.test_cases
+      .map((tc: any, i: number) => `
+        <div class="rounded bg-gray-700 p-2">
+          <strong>测试 ${i + 1}:</strong> ${tc.description || '检查代码是否符合要求'}
+        </div>
+      `)
+      .join('');
+  }
+
+  function startTimer() {
+    timerInterval = window.setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const minutes = Math.floor(elapsed / 60);
+      const seconds = elapsed % 60;
+      document.getElementById('timer')!.textContent = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000);
+  }
+
+  function handleSave(code: { html: string; css: string; js: string }) {
+    // 保存进度到数据库
+    const user = useUserStore.getState().user;
+    if (!user) return;
+
+    supabase
+      .from('user_challenge_progress')
+      .upsert({
+        user_id: user.id,
+        challenge_id: challengeId,
+        last_saved_html: code.html,
+        last_saved_css: code.css,
+        last_saved_js: code.js,
+        last_accessed_at: new Date().toISOString()
+      });
+  }
+
+  function handleRun() {
+    console.log('Running code...');
+  }
+
+  // 提交答案
+  document.getElementById('submitBtn')?.addEventListener('click', async () => {
+    const { html, css, js } = useEditorStore.getState();
+    const user = useUserStore.getState().user;
+    
+    if (!user) {
+      alert('请先登录');
+      return;
+    }
+
+    // 显示加载状态
+    const submitBtn = document.getElementById('submitBtn')!;
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = '评估中...';
+    submitBtn.setAttribute('disabled', 'true');
+
+    try {
+      // 使用 AI 评估代码
+      const result = await evaluateCode(
+        { html, css, js },
+        {
+          title: challenge.title,
+          description: challenge.description,
+          instructions: challenge.instructions
+        }
+      );
+
+      if (result.success) {
+        showResult(true, result.message);
+        
+        // 记录完成
+        await supabase.from('user_challenge_progress').upsert({
+          user_id: user.id,
+          challenge_id: challengeId,
+          status: 'completed',
+          completion_time_seconds: Math.floor((Date.now() - startTime) / 1000),
+          hints_used: hintsUsed,
+          completed_at: new Date().toISOString()
+        });
+
+        // 添加奖励
+        await supabase.from('xp_transactions').insert({
+          user_id: user.id,
+          amount: challenge.xp_reward,
+          reason: `完成挑战: ${challenge.title}`,
+          source_type: 'challenge',
+          source_id: challengeId
+        });
+
+        await supabase.from('coin_transactions').insert({
+          user_id: user.id,
+          amount: challenge.coin_reward,
+          transaction_type: 'earn',
+          reason: `完成挑战: ${challenge.title}`,
+          source_type: 'challenge',
+          source_id: challengeId
+        });
+      } else {
+        showResult(false, result.error || '提交失败');
+      }
+    } catch (error) {
+      console.error('Error submitting:', error);
+      showResult(false, '评估出错，请稍后再试');
+    } finally {
+      submitBtn.textContent = originalText;
+      submitBtn.removeAttribute('disabled');
+    }
+  });
+
+  function showResult(success: boolean, message: string) {
+    const modal = document.getElementById('resultModal')!;
+    const content = document.getElementById('resultContent')!;
+    
+    content.innerHTML = `
+      <div class="text-center">
+        <div class="mb-4 text-6xl">${success ? '🎉' : '💪'}</div>
+        <h3 class="mb-2 text-2xl font-bold ${success ? 'text-green-600' : 'text-orange-600'}">
+          ${success ? '挑战成功！' : '再试一次！'}
+        </h3>
+        <p class="mb-6 text-gray-600">${message}</p>
+        ${success ? `
+          <div class="mb-6 flex justify-center gap-4">
+            <div class="rounded-lg bg-yellow-50 px-4 py-2">
+              <span class="text-yellow-600">⭐ +${challenge.xp_reward} XP</span>
+            </div>
+            <div class="rounded-lg bg-yellow-50 px-4 py-2">
+              <span class="text-yellow-600">🪙 +${challenge.coin_reward} 金币</span>
+            </div>
+          </div>
+        ` : ''}
+        <div class="flex gap-3">
+          ${success ? `
+            <button onclick="window.location.href='/learn'" class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-white">
+              返回学习中心
+            </button>
+            <button onclick="location.reload()" class="flex-1 rounded-lg bg-gray-300 px-4 py-2">
+              再玩一次
+            </button>
+          ` : `
+            <button onclick="document.getElementById('resultModal').classList.add('hidden')" class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-white">
+              继续尝试
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+    
+    modal.classList.remove('hidden');
+  }
+
+  // 获取提示
+  document.getElementById('getHintBtn')?.addEventListener('click', async () => {
+    const user = useUserStore.getState().user;
+    if (!user) return;
+
+    if (user.coins < 5) {
+      alert('金币不足！完成更多挑战来获取金币。');
+      return;
+    }
+
+    hintsUsed++;
+    const { html, css, js } = useEditorStore.getState();
+    
+    const hint = await generateHint(
+      {
+        title: challenge.title,
+        description: challenge.description,
+        instructions: challenge.instructions
+      },
+      { html, css, js },
+      Math.min(hintsUsed, 3)
+    );
+
+    if (hint.success) {
+      const container = document.getElementById('hintsContainer')!;
+      const hintDiv = document.createElement('div');
+      hintDiv.className = 'rounded bg-yellow-900/30 border border-yellow-600 p-3 text-sm text-yellow-100';
+      hintDiv.innerHTML = `<strong>提示 ${hintsUsed}:</strong> ${hint.message}`;
+      container.appendChild(hintDiv);
+
+      // 扣除金币
+      await supabase.from('coin_transactions').insert({
+        user_id: user.id,
+        amount: -5,
+        transaction_type: 'spend',
+        reason: '获取提示',
+        source_type: 'hint',
+        source_id: challengeId
+      });
+    }
+  });
+
+  // 初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    loadChallenge();
+  });
+</script>
+

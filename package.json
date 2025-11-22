@@ -1,7 +1,8 @@
 {
-  "name": "astro-supabase-starter",
+  "name": "gamecode-lab",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "游戏化的HTML5编程教育平台",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -12,13 +13,28 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/netlify": "^6.1.0",
+    "@astrojs/react": "^3.6.2",
     "@supabase/supabase-js": "^2.48.1",
     "@tailwindcss/vite": "^4.0.1",
     "astro": "^5.1.10",
+    "clsx": "^2.1.1",
+    "codemirror": "^6.0.1",
+    "@codemirror/lang-html": "^6.4.0",
+    "@codemirror/lang-css": "^6.2.0",
+    "@codemirror/lang-javascript": "^6.2.0",
+    "@codemirror/theme-one-dark": "^6.1.0",
+    "@uiw/react-codemirror": "^4.23.5",
+    "framer-motion": "^11.11.17",
+    "lucide-react": "^0.462.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^5.0.2",
     "typescript": "^5.6.3"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "tailwindcss": "^4.0.1"
   }
 }
