@@ -2,7 +2,7 @@
   "name": "gamecode-lab",
   "type": "module",
   "version": "1.0.0",
-  "description": "游戏化的HTML5编程教育平台",
+  "description": "信息科大编程实验室 — 北京信息科技大学大学生 Web 编程学习平台",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

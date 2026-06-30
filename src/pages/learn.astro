@@ -1,51 +1,59 @@
 ---
 import Layout from '../components/Layout.astro';
+import UserProfile from '../components/react/UserProfile';
+import DemoLoginSection from '../components/react/DemoLoginSection';
+import { pageTitle, BRAND } from '../lib/branding';
 ---
 
-<Layout title="学习中心 - GameCode Lab">
-  <div class="min-h-screen bg-gray-50">
-    <!-- 顶部导航栏 -->
-    <nav class="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
-      <div class="mx-auto max-w-7xl px-4 py-4">
-        <div class="flex items-center justify-between">
-          <a href="/" class="flex items-center gap-2 text-xl font-bold text-gray-900">
-            <span class="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-2 text-white">
-              🎮
-            </span>
-            GameCode Lab
-          </a>
-          
-          <div class="flex items-center gap-4">
-            <button id="aiAssistantBtn" class="flex items-center gap-2 rounded-lg bg-purple-100 px-4 py-2 text-purple-700 transition hover:bg-purple-200">
-              <span>✨</span>
-              <span class="hidden sm:inline">AI 助教</span>
-            </button>
-            <div id="userProfileBtn" class="cursor-pointer"></div>
-          </div>
+<Layout title={pageTitle('学习中心')} currentPath="/learn" fullWidth>
+  <div class="min-h-screen bg-bistu-bg">
+    <!-- 登录提示条 -->
+    <div id="loginBanner" class="border-b border-bistu-primary/20 bg-bistu-primary/5 px-4 py-3">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
+        <p class="text-sm text-bistu-primary">
+          <span id="loginBannerText">登录后可保存学习进度、提交挑战、发布作品</span>
+        </p>
+        <div id="loginBannerActions">
+          <DemoLoginSection client:load compact />
         </div>
       </div>
-    </nav>
+    </div>
 
-    <!-- 主内容区 -->
     <div class="mx-auto max-w-7xl px-4 py-8">
-      <!-- 用户信息卡片 -->
-      <div class="mb-8">
-        <div id="userProfileCard"></div>
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold text-bistu-primary">欢迎，信息科大的同学！</h1>
+        <p class="text-gray-600">{BRAND.subtitle}</p>
       </div>
 
-      <!-- 学习进度概览 -->
+      <!-- 页面操作栏 -->
+      <div class="mb-6 flex flex-wrap items-center justify-end gap-3">
+        <button
+          id="aiAssistantBtn"
+          class="flex items-center gap-2 rounded-lg bg-bistu-primary/10 px-4 py-2 text-bistu-primary transition hover:bg-bistu-primary/20"
+        >
+          <span>✨</span>
+          <span class="hidden sm:inline">{BRAND.aiAssistant}</span>
+        </button>
+        <div id="userProfileBtn"></div>
+      </div>
+
+      <div class="mb-8">
+        <div id="userProfileCard">
+          <UserProfile client:load />
+        </div>
+      </div>
+
       <div class="mb-8">
         <h2 class="mb-4 text-2xl font-bold text-gray-900">📊 学习概览</h2>
         <div class="grid gap-6 md:grid-cols-4">
           <div class="rounded-xl bg-white p-6 shadow-md">
-            <div class="mb-2 flex items-center gap-2 text-blue-600">
+            <div class="mb-2 flex items-center gap-2 text-bistu-primary">
               <span class="text-2xl">📚</span>
               <span class="text-sm font-medium">完成课程</span>
             </div>
             <p class="text-3xl font-bold text-gray-900" id="completedLessons">0</p>
             <p class="mt-1 text-xs text-gray-500">/ 25 课程</p>
           </div>
-
           <div class="rounded-xl bg-white p-6 shadow-md">
             <div class="mb-2 flex items-center gap-2 text-green-600">
               <span class="text-2xl">🎯</span>
@@ -54,18 +62,16 @@ import Layout from '../components/Layout.astro';
             <p class="text-3xl font-bold text-gray-900" id="completedChallenges">0</p>
             <p class="mt-1 text-xs text-gray-500">/ 50 挑战</p>
           </div>
-
           <div class="rounded-xl bg-white p-6 shadow-md">
-            <div class="mb-2 flex items-center gap-2 text-yellow-600">
+            <div class="mb-2 flex items-center gap-2 text-bistu-gold">
               <span class="text-2xl">⭐</span>
               <span class="text-sm font-medium">经验值</span>
             </div>
             <p class="text-3xl font-bold text-gray-900" id="totalXP">0</p>
             <p class="mt-1 text-xs text-gray-500">XP</p>
           </div>
-
           <div class="rounded-xl bg-white p-6 shadow-md">
-            <div class="mb-2 flex items-center gap-2 text-purple-600">
+            <div class="mb-2 flex items-center gap-2 text-bistu-accent">
               <span class="text-2xl">🏆</span>
               <span class="text-sm font-medium">成就徽章</span>
             </div>
@@ -75,27 +81,20 @@ import Layout from '../components/Layout.astro';
         </div>
       </div>
 
-      <!-- 学习路径 -->
       <div class="mb-8">
-        <h2 class="mb-4 text-2xl font-bold text-gray-900">🎓 学习路径</h2>
-        <div id="courseModulesContainer" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <!-- 课程卡片将由 React 渲染 -->
-        </div>
+        <h2 class="mb-4 text-2xl font-bold text-gray-900">🎓 信息科大 Web 编程路径</h2>
+        <div id="courseModulesContainer" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
       </div>
 
-      <!-- 每日挑战 -->
       <div class="mb-8">
-        <div class="rounded-xl bg-gradient-to-r from-orange-400 to-red-500 p-8 text-white shadow-xl">
+        <div class="rounded-xl bg-gradient-to-r from-bistu-accent to-bistu-primary p-8 text-white shadow-xl">
           <div class="flex items-center justify-between">
             <div>
               <h3 class="mb-2 flex items-center gap-2 text-2xl font-bold">
-                <span>🔥</span>
-                每日挑战
+                <span>🔥</span> 每日挑战
               </h3>
-              <p class="mb-4 text-white/90">
-                完成今日挑战，获得额外奖励！
-              </p>
-              <button class="rounded-lg bg-white px-6 py-2 font-semibold text-orange-600 transition hover:bg-gray-100">
+              <p class="mb-4 text-white/90">完成今日信息科大主题编程挑战，获得额外奖励！</p>
+              <button class="rounded-lg bg-white px-6 py-2 font-semibold text-bistu-primary transition hover:bg-gray-100">
                 接受挑战
               </button>
             </div>
@@ -104,43 +103,33 @@ import Layout from '../components/Layout.astro';
         </div>
       </div>
 
-      <!-- 最近学习 -->
       <div>
         <h2 class="mb-4 text-2xl font-bold text-gray-900">⏱️ 继续学习</h2>
-        <div id="recentLessonsContainer" class="grid gap-6 md:grid-cols-2">
-          <!-- 最近学习的课程 -->
-        </div>
+        <div id="recentLessonsContainer" class="grid gap-6 md:grid-cols-2"></div>
       </div>
     </div>
 
-    <!-- AI 助教浮动按钮 -->
     <button
       id="floatingAIBtn"
-      class="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-blue-600 text-3xl text-white shadow-2xl transition-all hover:scale-110 hover:shadow-3xl"
-      title="AI 助教"
+      class="fixed bottom-6 right-6 z-40 flex h-16 w-16 items-center justify-center rounded-full bg-bistu-primary text-3xl text-white shadow-2xl transition hover:scale-110"
+      title={BRAND.aiAssistant}
     >
       ✨
     </button>
   </div>
-
-  <!-- React 组件容器 -->
-  <div id="aiAssistantRoot"></div>
 </Layout>
 
 <script>
   // @ts-nocheck
   import { supabase } from '../lib/supabase';
 
-  // 简化：AI 助教按钮
-  document.getElementById('aiAssistantBtn')?.addEventListener('click', () => {
-    alert('AI 助教功能开发中...');
-  });
+  function openAI() {
+    window.dispatchEvent(new CustomEvent('open-ai-assistant'));
+  }
 
-  document.getElementById('floatingAIBtn')?.addEventListener('click', () => {
-    alert('AI 助教功能开发中...');
-  });
+  document.getElementById('aiAssistantBtn')?.addEventListener('click', openAI);
+  document.getElementById('floatingAIBtn')?.addEventListener('click', openAI);
 
-  // 加载课程模块
   async function loadCourseModules() {
     const container = document.getElementById('courseModulesContainer');
     if (!container) return;
@@ -158,22 +147,20 @@ import Layout from '../components/Layout.astro';
         container.innerHTML = '';
         modules.forEach((module) => {
           const card = document.createElement('div');
-          card.className = 'rounded-xl bg-white p-6 shadow-lg transition hover:shadow-xl cursor-pointer';
+          card.className = 'rounded-xl bg-white p-6 shadow-lg transition hover:shadow-xl cursor-pointer border border-bistu-primary/5';
           card.innerHTML = `
             <div class="text-4xl mb-4">${module.icon || '📚'}</div>
-            <h3 class="text-xl font-bold mb-2">${module.title}</h3>
+            <h3 class="text-xl font-bold mb-2 text-bistu-primary">${module.title}</h3>
             <p class="text-gray-600 mb-4">${module.description || ''}</p>
-            <button class="w-full rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+            <button class="w-full rounded-lg bg-bistu-primary px-4 py-2 text-white hover:bg-bistu-primary-light">
               开始学习
             </button>
           `;
-          card.onclick = () => {
-            window.location.href = `/course/${module.slug}`;
-          };
+          card.onclick = () => { window.location.href = `/learn#${module.slug}`; };
           container.appendChild(card);
         });
       } else {
-        container.innerHTML = '<p class="text-gray-500">暂无课程</p>';
+        container.innerHTML = '<p class="text-gray-500">暂无课程，请运行数据库 migration 或调用 /api/seed-data</p>';
       }
     } catch (error) {
       console.error('Error loading courses:', error);
@@ -181,26 +168,21 @@ import Layout from '../components/Layout.astro';
     }
   }
 
-  // 更新统计数据
-  async function updateStats() {
-    // 简化：显示默认值
-    const stats = {
-      completedLessons: 0,
-      completedChallenges: 0,
-      totalXP: 0,
-      totalAchievements: 0
-    };
-    
-    document.getElementById('completedLessons').textContent = stats.completedLessons.toString();
-    document.getElementById('completedChallenges').textContent = stats.completedChallenges.toString();
-    document.getElementById('totalXP').textContent = stats.totalXP.toString();
-    document.getElementById('totalAchievements').textContent = stats.totalAchievements.toString();
+  function updateLoginBanner() {
+    try {
+      const stored = localStorage.getItem('gamecode-user-storage');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.isAuthenticated) {
+          const banner = document.getElementById('loginBanner');
+          if (banner) banner.style.display = 'none';
+        }
+      }
+    } catch (_) {}
   }
 
-  // 初始化
   document.addEventListener('DOMContentLoaded', () => {
     loadCourseModules();
-    updateStats();
+    updateLoginBanner();
   });
 </script>
-

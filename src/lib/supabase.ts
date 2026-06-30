@@ -21,6 +21,7 @@ export type UserProfile = {
   coins: number;
   title: string;
   is_guest: boolean;
+  is_demo?: boolean;
   guest_trial_start: string | null;
   guest_trial_end: string | null;
   total_lessons_completed: number;

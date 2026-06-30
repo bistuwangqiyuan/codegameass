@@ -1,6 +1,7 @@
 // 用户认证工具函数
 import { supabase } from './supabase';
 import type { UserProfile } from './supabase';
+import { getDemoAccount, type DemoRole } from './demo-accounts';
 
 /**
  * 创建游客账号（免费试用 1 个月）
@@ -9,7 +10,7 @@ export async function createGuestAccount(): Promise<{ success: boolean; user?: U
   try {
     // 生成随机游客 ID
     const guestId = `guest_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-    const guestEmail = `${guestId}@guest.gamecodelab.com`;
+    const guestEmail = `${guestId}@guest.bistu.edu.cn`;
     const guestPassword = Math.random().toString(36).substring(2, 15);
 
     // 创建游客账号
@@ -67,10 +68,15 @@ export async function createGuestAccount(): Promise<{ success: boolean; user?: U
   }
 }
 
+export function isDemoAccount(profile: UserProfile): boolean {
+  return profile.is_demo === true;
+}
+
 /**
- * 检查游客试用是否过期
+ * 检查游客试用是否过期（测试账号永久有效）
  */
 export function isGuestTrialExpired(profile: UserProfile): boolean {
+  if (isDemoAccount(profile)) return false;
   if (!profile.is_guest || !profile.guest_trial_end) return false;
   
   const trialEnd = new Date(profile.guest_trial_end);
@@ -89,6 +95,16 @@ export function getTrialDaysRemaining(profile: UserProfile): number {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   
   return Math.max(0, diffDays);
+}
+
+/**
+ * 使用公开测试账号登录
+ */
+export async function signInWithDemoAccount(
+  role: DemoRole
+): Promise<{ success: boolean; user?: UserProfile; error?: string }> {
+  const account = getDemoAccount(role);
+  return signInWithEmail(account.email, account.password);
 }
 
 /**

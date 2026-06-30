@@ -1,16 +1,63 @@
 @import 'tailwindcss';
 
+@theme {
+  --color-bistu-primary: #003087;
+  --color-bistu-primary-light: #1a4da6;
+  --color-bistu-primary-dark: #002060;
+  --color-bistu-accent: #C8102E;
+  --color-bistu-accent-light: #e8394f;
+  --color-bistu-gold: #B8860B;
+  --color-bistu-bg: #f0f4fa;
+}
+
 @layer base {
-  a {
-    @apply hover:underline hover:underline-offset-2 hover:decoration-green-500;
+  html {
+    scroll-behavior: smooth;
   }
+
+  body {
+    @apply bg-bistu-bg text-gray-900 antialiased;
+  }
+
+  a {
+    @apply hover:underline hover:underline-offset-2 hover:decoration-bistu-accent;
+  }
+
   td {
     @apply pt-4 pb-6;
   }
+
   th {
     @apply py-4;
   }
+
   img {
-    @apply border rounded-sm border-neutral-500;
+    @apply rounded-sm;
+  }
+
+  img.brand-logo {
+    @apply border-0;
+  }
+}
+
+@layer utilities {
+  .bg-bistu-gradient {
+    background: linear-gradient(135deg, #f0f4fa 0%, #e8eef8 50%, #fdf2f4 100%);
+  }
+
+  .bg-bistu-hero {
+    background: linear-gradient(135deg, #003087 0%, #1a4da6 60%, #002060 100%);
+  }
+
+  .text-bistu-gradient {
+    @apply bg-gradient-to-r from-bistu-primary to-bistu-accent bg-clip-text text-transparent;
+  }
+
+  .btn-bistu-primary {
+    @apply rounded-xl bg-bistu-primary px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-bistu-primary-light hover:shadow-xl;
+  }
+
+  .btn-bistu-accent {
+    @apply rounded-xl bg-bistu-accent px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-bistu-accent-light;
   }
 }

@@ -1,4 +1,6 @@
-# 🚀 GameCode Lab - 立即启动指南
+# 信息科大编程实验室 — 立即启动指南
+
+北京信息科技大学 · 大学生 Web 编程学习平台
 
 ## ✅ 项目已完成！
 
@@ -40,12 +42,35 @@ Rename-Item .env.local .env
 6. 点击右下角绿色按钮 **"Run"**
 7. 等待约 10 秒，看到 "Success. No rows returned" 即成功！
 
+### 2.4 运行 BISTU 测试账号迁移（重要）
+1. 在 SQL Editor 中新建查询
+2. 打开并运行：`supabase/migrations/20250630000000_bistu_demo_accounts.sql`
+3. 这将创建 3 个公开测试账号并发布全部课程
+
+**或使用 API（需配置 SUPABASE_SERVICE_ROLE_KEY）：**
+```javascript
+fetch('/api/setup-demo-users', { method: 'POST' })
+  .then(res => res.json())
+  .then(console.log);
+```
+
 ---
 
-## 🎮 步骤 3: 启动项目
+## 公开测试账号
+
+| 角色 | 邮箱 | 密码 |
+|------|------|------|
+| 学生 | demo.student@bistu.edu.cn | BistuDemo2026 |
+| 教师 | demo.teacher@bistu.edu.cn | BistuDemo2026 |
+| 管理员 | demo.admin@bistu.edu.cn | BistuDemo2026 |
+
+---
+
+## 步骤 3: 启动项目
 
 ```powershell
 npm run dev
+```
 ```
 
 项目将在 **http://localhost:4321** 启动
@@ -54,10 +79,12 @@ npm run dev
 
 ## ✨ 测试功能
 
-### 1. 测试游客试用
-- 访问首页
-- 点击 **"免费试用 30 天"** 按钮
-- 自动创建游客账号并进入学习中心
+### 1. 测试公开账号（推荐）
+- 访问首页，在「测试账号体验」区块点击「一键登录（学生）」
+- 或使用邮箱 `demo.student@bistu.edu.cn` / 密码 `BistuDemo2026`
+
+### 2. 测试游客试用
+- 点击导航栏「登录 / 测试账号」→「游客试用」
 
 ### 2. 测试代码编辑器
 - 进入学习中心

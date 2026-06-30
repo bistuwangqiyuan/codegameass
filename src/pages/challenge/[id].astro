@@ -1,29 +1,26 @@
 ---
 import Layout from '../../components/Layout.astro';
+import { pageTitle, BRAND } from '../../lib/branding';
 
 export const prerender = false;
 ---
 
-<Layout title="编程挑战 - GameCode Lab">
+<Layout title={pageTitle('编程挑战')} showNav={false} showFooter={false} fullWidth>
   <div class="flex h-screen flex-col bg-gray-900">
     <!-- 顶部工具栏 -->
-    <div class="flex items-center justify-between border-b border-gray-700 bg-gray-800 px-6 py-3">
+    <div class="flex items-center justify-between border-b border-bistu-primary/30 bg-bistu-primary-dark px-6 py-3">
       <div class="flex items-center gap-4">
-        <a
-          href="/learn"
-          class="flex items-center gap-2 text-gray-300 transition hover:text-white"
-        >
+        <a href="/learn" class="flex items-center gap-2 text-gray-300 transition hover:text-white">
           <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
           </svg>
-          返回
+          返回学习中心
         </a>
-        
         <div class="h-6 w-px bg-gray-600"></div>
-        
+        <img src={BRAND.logo} alt="" class="brand-logo h-8 w-8" />
         <div>
           <h1 class="text-lg font-bold text-white" id="challengeTitle">加载中...</h1>
-          <p class="text-xs text-gray-400" id="challengeType"></p>
+          <p class="text-xs text-gray-400" id="challengeType">{BRAND.shortName} · 编程挑战</p>
         </div>
       </div>
 
@@ -53,9 +50,9 @@ export const prerender = false;
         <!-- AI 助教按钮 -->
         <button
           id="aiHelpBtn"
-          class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-purple-700"
+          class="rounded-lg bg-bistu-accent px-4 py-2 text-sm font-medium text-white transition hover:bg-bistu-accent-light"
         >
-          ✨ AI 助教
+          ✨ {BRAND.aiAssistant}
         </button>
 
         <!-- 提交按钮 -->

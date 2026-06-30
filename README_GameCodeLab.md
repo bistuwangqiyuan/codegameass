@@ -1,31 +1,26 @@
-# GameCode Lab - 游戏化的 HTML5 编程教育平台
+# 信息科大编程实验室
 
 <div align="center">
 
-![GameCode Lab](https://img.shields.io/badge/GameCode-Lab-blue?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-1.0.0-green?style=for-the-badge)
-![License](https://img.shields.io/badge/license-MIT-orange?style=for-the-badge)
+**北京信息科技大学 · 大学生 Web 编程学习平台**
 
-**通过游戏化学习、AI 实时辅导，轻松掌握 Web 开发技能**
-
-[开始使用](#快速开始) • [功能特性](#核心功能) • [技术栈](#技术架构) • [文档](#文档)
+[北京信息科技大学官网](https://www.bistu.edu.cn/) • [学校 VI 系统](https://vi.bistu.edu.cn/)
 
 </div>
 
 ---
 
-## 📋 项目概述
+## 项目概述
 
-GameCode Lab 是一个完全 AI 驱动的游戏化在线编程学习平台，让零基础用户通过任务闯关、AI 实时反馈、积分与成就机制，系统掌握 HTML5、CSS、JavaScript 等 Web 基础开发技能。
+信息科大编程实验室是面向北京信息科技大学大学生的游戏化 Web 编程学习平台，通过任务闯关、AI 实时反馈、积分与成就机制，系统掌握 HTML5、CSS、JavaScript 等技能。
 
-### 🎯 核心特点
+### 公开测试账号
 
-- 🎮 **游戏化学习体系** - 通过闯关、任务、Boss 挑战等游戏机制
-- 🤖 **AI 智能助教** - DeepSeek 驱动的实时代码讲解和纠错
-- 💻 **在线代码编辑器** - 浏览器内置沙盒，无需安装任何软件
-- 🏆 **成就与排行榜** - 完整的激励系统，激发学习动力
-- 👥 **作品社区** - 分享作品，获得反馈，共同成长
-- 🎁 **免费试用 30 天** - 游客无需注册即可体验全部功能
+| 角色 | 邮箱 | 密码 |
+|------|------|------|
+| 学生 | demo.student@bistu.edu.cn | BistuDemo2026 |
+| 教师 | demo.teacher@bistu.edu.cn | BistuDemo2026 |
+| 管理员 | demo.admin@bistu.edu.cn | BistuDemo2026 |
 
 ---
 

@@ -1,0 +1,45 @@
+---
+import { BRAND } from '../lib/branding';
+---
+
+<footer class="mt-auto border-t border-bistu-primary/10 bg-bistu-primary text-white">
+  <div class="mx-auto max-w-7xl px-4 py-12">
+    <div class="grid gap-8 md:grid-cols-3">
+      <div>
+        <div class="mb-4 flex items-center gap-3">
+          <img src={BRAND.logo} alt={BRAND.university} class="brand-logo h-12 w-12" />
+          <div>
+            <div class="text-lg font-bold">{BRAND.name}</div>
+            <div class="text-sm text-white/70">{BRAND.subtitle}</div>
+          </div>
+        </div>
+        <p class="text-sm text-white/70">{BRAND.motto}</p>
+      </div>
+
+      <div>
+        <h3 class="mb-3 font-semibold">快速链接</h3>
+        <ul class="space-y-2 text-sm text-white/80">
+          <li><a href="/learn" class="text-white/80 no-underline hover:text-white hover:no-underline">学习中心</a></li>
+          <li><a href="/community" class="text-white/80 no-underline hover:text-white hover:no-underline">作品社区</a></li>
+          <li><a href="/#demo-accounts" class="text-white/80 no-underline hover:text-white hover:no-underline">测试账号</a></li>
+          <li><a href={BRAND.website} target="_blank" rel="noopener noreferrer" class="text-white/80 no-underline hover:text-white hover:no-underline">北京信息科技大学官网</a></li>
+          <li><a href={BRAND.viWebsite} target="_blank" rel="noopener noreferrer" class="text-white/80 no-underline hover:text-white hover:no-underline">学校视觉识别系统</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="mb-3 font-semibold">学校信息</h3>
+        <ul class="space-y-2 text-sm text-white/80">
+          <li>办学始于 {BRAND.founded} 年</li>
+          <li>校区：{BRAND.campuses.join(' · ')}</li>
+          <li>面向信息科大大学生的 Web 编程实践平台</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8 border-t border-white/20 pt-6 text-center text-xs text-white/60">
+      <p>© {new Date().getFullYear()} {BRAND.university} · {BRAND.name}</p>
+      <p class="mt-1">本平台仅供教学演示与学习体验使用</p>
+    </div>
+  </div>
+</footer>

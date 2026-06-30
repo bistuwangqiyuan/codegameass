@@ -1,5 +1,7 @@
-// DeepSeek AI 助教服务
-// 提供代码讲解、纠错、生成任务等功能
+// DeepSeek AI 助教服务 — 信息科大编程实验室
+import { BRAND } from '../branding';
+
+const BISTU_SYSTEM_PERSONA = `你是${BRAND.aiAssistant}，${BRAND.university}的 AI 编程助教。你面向信息科大大学生，用友好、耐心的中文辅导 Web 编程（HTML/CSS/JavaScript）。举例时可使用校园场景，如新生欢迎页、社团活动页、课程表工具、小营校区等。`;
 
 const DEEPSEEK_API_KEY = import.meta.env.DEEPSEEK_API_KEY;
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
@@ -139,7 +141,7 @@ export async function evaluateCode(
   const messages: AIMessage[] = [
     {
       role: 'system',
-      content: `你是 CodeMentor DS，一个专业的编程教育 AI 助教。你需要评估学生提交的代码，给出友好、建设性的反馈。
+      content: `${BISTU_SYSTEM_PERSONA} 你需要评估学生提交的代码，给出友好、建设性的反馈。
       
 评估标准：
 1. 代码是否完成了任务要求
@@ -196,7 +198,7 @@ export async function explainCode(code: string, language: 'html' | 'css' | 'java
   const messages: AIMessage[] = [
     {
       role: 'system',
-      content: '你是 CodeMentor DS，一个友好的编程教育助教。请用简单易懂的中文解释代码，适合初学者理解。'
+      content: `${BISTU_SYSTEM_PERSONA} 请用简单易懂的中文解释代码，适合初学者理解。`
     },
     {
       role: 'user',
@@ -223,7 +225,7 @@ export async function diagnoseError(
   const messages: AIMessage[] = [
     {
       role: 'system',
-      content: '你是 CodeMentor DS，专门帮助学生调试代码错误。请用友好的语言解释错误原因，并给出具体的修复建议。'
+      content: `${BISTU_SYSTEM_PERSONA} 专门帮助学生调试代码错误。请用友好的语言解释错误原因，并给出具体的修复建议。`
     },
     {
       role: 'user',
@@ -268,7 +270,7 @@ export async function generateHint(
   const messages: AIMessage[] = [
     {
       role: 'system',
-      content: `你是 CodeMentor DS。学生在挑战中遇到困难，需要你的提示。提示级别：${hintLevelDescriptions[hintLevel as keyof typeof hintLevelDescriptions]}。
+      content: `${BISTU_SYSTEM_PERSONA} 学生在挑战中遇到困难，需要你的提示。提示级别：${hintLevelDescriptions[hintLevel as keyof typeof hintLevelDescriptions]}。
       
 请给出恰当程度的提示，既不直接给答案，也不过于模糊。`
     },
@@ -299,7 +301,7 @@ export async function chatWithAI(
   const messages: AIMessage[] = [
     {
       role: 'system',
-      content: `你是 CodeMentor DS，GameCode Lab 的 AI 编程助教。你性格友好、耐心，善于用生动的比喻讲解编程概念。
+      content: `${BISTU_SYSTEM_PERSONA} 你性格友好、耐心，善于用生动的比喻讲解编程概念。回答时可结合信息科大学生的学习场景。
       
 你的职责：
 - 回答编程相关的问题
@@ -329,7 +331,7 @@ export async function generateChallenge(
   const messages: AIMessage[] = [
     {
       role: 'system',
-      content: `你是 CodeMentor DS，需要生成一个编程挑战。
+      content: `${BISTU_SYSTEM_PERSONA} 需要生成一个与信息科大校园场景相关的编程挑战。
 
 返回 JSON 格式：
 {

@@ -1,23 +1,27 @@
 ---
 import Layout from '../components/Layout.astro';
+import { pageTitle, BRAND } from '../lib/branding';
 ---
 
-<Layout title="系统诊断 - GameCode Lab">
-  <div class="min-h-screen bg-gray-50 py-12">
+<Layout title={pageTitle('系统诊断')} currentPath="/diagnostic">
+  <div class="min-h-screen bg-bistu-bg py-12">
     <div class="mx-auto max-w-4xl px-4">
-      <div class="rounded-2xl bg-white p-8 shadow-lg">
-        <h1 class="mb-6 text-3xl font-bold text-gray-900">🔧 系统诊断</h1>
-        
-        <div class="mb-6">
-          <button 
-            id="runDiagnostic" 
-            class="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
-          >
-            运行诊断测试
-          </button>
+      <div class="mb-6 flex items-center gap-4">
+        <img src={BRAND.logo} alt="" class="brand-logo h-12 w-12" />
+        <div>
+          <h1 class="text-3xl font-bold text-bistu-primary">系统诊断</h1>
+          <p class="text-gray-600">{BRAND.name} · 运行环境检测</p>
         </div>
+      </div>
+      <div class="rounded-2xl bg-white p-8 shadow-lg">
+        <button 
+          id="runDiagnostic" 
+          class="btn-bistu-primary"
+        >
+          运行诊断测试
+        </button>
 
-        <div id="diagnosticResults" class="space-y-4"></div>
+        <div id="diagnosticResults" class="mt-6 space-y-4"></div>
       </div>
 
       <!-- 修复指南 -->
