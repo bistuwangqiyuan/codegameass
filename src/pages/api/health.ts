@@ -26,6 +26,7 @@ export const GET: APIRoute = async () => {
 
     let courseCount = 0;
     let projectCount = 0;
+    let challengeCount = 0;
     let tablesExist = false;
 
     try {
@@ -38,6 +39,11 @@ export const GET: APIRoute = async () => {
         SELECT COUNT(*)::int AS count FROM user_projects WHERE is_public = TRUE
       `;
       projectCount = Number((projects[0] as { count: number }).count);
+
+      const challenges = await sql`
+        SELECT COUNT(*)::int AS count FROM challenges WHERE is_published = TRUE
+      `;
+      challengeCount = Number((challenges[0] as { count: number }).count);
 
       tablesExist = true;
     } catch (error) {
@@ -68,6 +74,7 @@ export const GET: APIRoute = async () => {
       authSecretSet,
       courseCount,
       projectCount,
+      challengeCount,
       tablesExist,
       databaseError: null,
       hint: courseCount === 0 ? 'Run POST /api/db/init to seed courses' : undefined,
