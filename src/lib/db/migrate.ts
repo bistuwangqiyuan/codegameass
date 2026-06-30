@@ -1,7 +1,11 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getPool, hasDatabase } from '../db';
+import ws from 'ws';
+import { neonConfig, Pool } from '@neondatabase/serverless';
+import { getConnectionString, hasDatabase } from '../db';
+
+neonConfig.webSocketConstructor = ws;
 
 const MIGRATIONS_DIR = join(dirname(fileURLToPath(import.meta.url)), '../../../db/neon');
 
@@ -49,7 +53,7 @@ export async function runMigrations(): Promise<{ files: string[]; statementsRun:
     .filter((f) => f.endsWith('.sql'))
     .sort();
 
-  const pool = getPool();
+  const pool = new Pool({ connectionString: getConnectionString()! });
   let statementsRun = 0;
 
   try {
@@ -63,7 +67,11 @@ export async function runMigrations(): Promise<{ files: string[]; statementsRun:
           statementsRun += 1;
         } catch (error) {
           const message = error instanceof Error ? error.message : String(error);
-          if (message.includes('already exists') || message.includes('duplicate key')) {
+          if (
+            message.includes('already exists') ||
+            message.includes('duplicate key') ||
+            message.includes('duplicate_object')
+          ) {
             continue;
           }
           throw new Error(`Migration ${file} failed: ${message}`);
