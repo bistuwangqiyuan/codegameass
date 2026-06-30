@@ -131,7 +131,32 @@ export const prerender = false;
 
 <script>
   // @ts-nocheck
-  import { supabase } from '../../lib/supabase';
+  import { createRoot } from 'react-dom/client';
+  import { createElement } from 'react';
+  import CodeEditor from '../../components/react/CodeEditor';
+  import AIAssistant from '../../components/react/AIAssistant';
+  import { useEditorStore } from '../../lib/store/editorStore';
+  import { useUserStore } from '../../lib/store/userStore';
+  import { evaluateCode, generateHint } from '../../lib/ai/deepseek';
+  import { apiFetch } from '../../lib/api-client';
+
+  function getAuthHeaders() {
+    try {
+      const stored = localStorage.getItem('gamecode-user-storage');
+      if (stored) {
+        const token = JSON.parse(stored)?.state?.authToken;
+        if (token) return { Authorization: `Bearer ${token}` };
+      }
+    } catch (_) {}
+    return {};
+  }
+
+  async function authFetch(path, options = {}) {
+    return apiFetch(path, {
+      ...options,
+      headers: { ...getAuthHeaders(), ...(options.headers || {}) },
+    });
+  }
 
   // 获取挑战 ID
   const challengeId = window.location.pathname.split('/').pop();
@@ -179,14 +204,9 @@ export const prerender = false;
   // 加载挑战数据
   async function loadChallenge() {
     try {
-      const { data, error } = await supabase
-        .from('challenges')
-        .select('*')
-        .eq('id', challengeId)
-        .single();
-
-      if (error) throw error;
-      challenge = data;
+      const data = await fetch(`/api/challenges/${challengeId}`).then((r) => r.json());
+      if (!data.success || !data.challenge) throw new Error(data.error || '加载失败');
+      challenge = data.challenge;
 
       // 更新 UI
       document.getElementById('challengeTitle')!.textContent = challenge.title;
@@ -270,20 +290,18 @@ export const prerender = false;
   }
 
   function handleSave(code: { html: string; css: string; js: string }) {
-    // 保存进度到数据库
     const user = useUserStore.getState().user;
     if (!user) return;
 
-    supabase
-      .from('user_challenge_progress')
-      .upsert({
-        user_id: user.id,
-        challenge_id: challengeId,
-        last_saved_html: code.html,
-        last_saved_css: code.css,
-        last_saved_js: code.js,
-        last_accessed_at: new Date().toISOString()
-      });
+    authFetch(`/api/challenges/${challengeId}/progress`, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'save',
+        html: code.html,
+        css: code.css,
+        js: code.js,
+      }),
+    }).catch(console.error);
   }
 
   function handleRun() {
@@ -319,33 +337,16 @@ export const prerender = false;
 
       if (result.success) {
         showResult(true, result.message);
-        
-        // 记录完成
-        await supabase.from('user_challenge_progress').upsert({
-          user_id: user.id,
-          challenge_id: challengeId,
-          status: 'completed',
-          completion_time_seconds: Math.floor((Date.now() - startTime) / 1000),
-          hints_used: hintsUsed,
-          completed_at: new Date().toISOString()
-        });
 
-        // 添加奖励
-        await supabase.from('xp_transactions').insert({
-          user_id: user.id,
-          amount: challenge.xp_reward,
-          reason: `完成挑战: ${challenge.title}`,
-          source_type: 'challenge',
-          source_id: challengeId
-        });
-
-        await supabase.from('coin_transactions').insert({
-          user_id: user.id,
-          amount: challenge.coin_reward,
-          transaction_type: 'earn',
-          reason: `完成挑战: ${challenge.title}`,
-          source_type: 'challenge',
-          source_id: challengeId
+        await authFetch(`/api/challenges/${challengeId}/progress`, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'complete',
+            completion_time_seconds: Math.floor((Date.now() - startTime) / 1000),
+            hints_used: hintsUsed,
+            xp_reward: challenge.xp_reward,
+            coin_reward: challenge.coin_reward,
+          }),
         });
       } else {
         showResult(false, result.error || '提交失败');
@@ -430,14 +431,9 @@ export const prerender = false;
       hintDiv.innerHTML = `<strong>提示 ${hintsUsed}:</strong> ${hint.message}`;
       container.appendChild(hintDiv);
 
-      // 扣除金币
-      await supabase.from('coin_transactions').insert({
-        user_id: user.id,
-        amount: -5,
-        transaction_type: 'spend',
-        reason: '获取提示',
-        source_type: 'hint',
-        source_id: challengeId
+      await authFetch(`/api/challenges/${challengeId}/progress`, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'spend_hint', coin_amount: 5 }),
       });
     }
   });

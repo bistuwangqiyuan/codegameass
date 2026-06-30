@@ -125,8 +125,6 @@ export const prerender = true;
 
 <script>
   // @ts-nocheck
-  import { supabase } from '../lib/supabase';
-
   function openAI() {
     window.dispatchEvent(new CustomEvent('open-ai-assistant'));
   }
@@ -139,13 +137,10 @@ export const prerender = true;
     if (!container) return;
 
     try {
-      const { data: modules, error } = await supabase
-        .from('course_modules')
-        .select('*')
-        .eq('is_published', true)
-        .order('order_index');
-
-      if (error) throw error;
+      const response = await fetch('/api/courses');
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || '加载失败');
+      const modules = data.modules;
 
       if (modules && modules.length > 0) {
         container.innerHTML = '';
@@ -164,7 +159,7 @@ export const prerender = true;
           container.appendChild(card);
         });
       } else {
-        container.innerHTML = '<p class="text-gray-500">暂无课程，请运行数据库 migration 或调用 /api/seed-data</p>';
+        container.innerHTML = '<p class="text-gray-500">暂无课程，请调用 POST /api/db/init 初始化数据库</p>';
       }
     } catch (error) {
       console.error('Error loading courses:', error);

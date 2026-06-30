@@ -4,6 +4,5 @@
 
 [build.environment]
   NODE_VERSION = "20"
-
-[template]
-  required-extensions = ["supabase"]
+  # AUTH_SECRET — 在 Netlify 环境变量中手动设置（≥32 字符随机字符串）
+  # NETLIFY_DATABASE_URL / NETLIFY_DB_URL — Neon 扩展自动注入

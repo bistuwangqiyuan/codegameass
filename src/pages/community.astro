@@ -96,8 +96,6 @@ export const prerender = true;
 
 <script>
   // @ts-nocheck
-  import { supabase } from '../lib/supabase';
-
   let currentPage = 1;
   const pageSize = 12;
 
@@ -110,21 +108,10 @@ export const prerender = true;
     if (!container) return;
 
     try {
-      let query = supabase
-        .from('user_projects')
-        .select('*')
-        .eq('is_public', true)
-        .range((page - 1) * pageSize, page * pageSize - 1);
-
-      switch (sortBy) {
-        case 'latest': query = query.order('created_at', { ascending: false }); break;
-        case 'popular': query = query.order('likes_count', { ascending: false }); break;
-        case 'views': query = query.order('views_count', { ascending: false }); break;
-        case 'ai_score': query = query.order('ai_score', { ascending: false, nullsFirst: false }); break;
-      }
-
-      const { data: projects, error } = await query;
-      if (error) throw error;
+      const response = await fetch(`/api/projects?page=${page}&pageSize=${pageSize}&sortBy=${sortBy}`);
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error);
+      const projects = data.projects;
 
       if (projects && projects.length > 0) {
         if (page === 1) container.innerHTML = '';

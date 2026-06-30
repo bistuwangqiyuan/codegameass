@@ -14,23 +14,21 @@ export const prerender = true;
         <div>
           <div class="mb-2"><BistuProgramBadge size="sm" /></div>
           <h1 class="text-3xl font-bold text-bistu-primary">系统诊断</h1>
-          <p class="text-gray-600">{BRAND.programLabel} · {BRAND.name} · 运行环境检测</p>
+          <p class="text-gray-600">{BRAND.programLabel} · {BRAND.name} · Neon 数据库检测</p>
         </div>
       </div>
       <div class="rounded-2xl bg-white p-8 shadow-lg">
-        <button 
-          id="runDiagnostic" 
-          class="btn-bistu-primary"
-        >
-          运行诊断测试
-        </button>
-
+        <div class="mb-4 flex flex-wrap gap-3">
+          <button id="runDiagnostic" class="btn-bistu-primary">运行诊断测试</button>
+          <button id="initDatabase" class="rounded-lg border border-bistu-primary px-4 py-2 text-bistu-primary hover:bg-bistu-primary/5">
+            初始化数据库
+          </button>
+        </div>
         <div id="diagnosticResults" class="mt-6 space-y-4"></div>
       </div>
 
-      <!-- 修复指南 -->
       <div id="fixGuide" class="mt-8 hidden rounded-2xl bg-yellow-50 p-8 shadow-lg">
-        <h2 class="mb-4 text-2xl font-bold text-yellow-900">📋 修复指南</h2>
+        <h2 class="mb-4 text-2xl font-bold text-yellow-900">修复指南</h2>
         <div id="fixInstructions"></div>
       </div>
     </div>
@@ -40,107 +38,93 @@ export const prerender = true;
 <script>
   // @ts-nocheck
   const button = document.getElementById('runDiagnostic');
+  const initBtn = document.getElementById('initDatabase');
   const results = document.getElementById('diagnosticResults');
   const fixGuide = document.getElementById('fixGuide');
   const fixInstructions = document.getElementById('fixInstructions');
 
-  button?.addEventListener('click', async () => {
+  async function runDiagnostic() {
     results.innerHTML = '<div class="text-gray-600">正在运行诊断...</div>';
-    
+
     try {
       const response = await fetch('/api/health');
       const data = await response.json();
-      
+
       let html = '<div class="space-y-4">';
-      
-      // 状态
+
+      const isOk = data.status === 'ok';
       html += `
-        <div class="flex items-center gap-3 rounded-lg border p-4 ${data.status === 'ok' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}">
-          <div class="text-2xl">${data.status === 'ok' ? '✅' : '❌'}</div>
+        <div class="flex items-center gap-3 rounded-lg border p-4 ${isOk ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}">
+          <div class="text-2xl">${isOk ? '✅' : '❌'}</div>
           <div>
-            <div class="font-semibold ${data.status === 'ok' ? 'text-green-900' : 'text-red-900'}">
-              ${data.status === 'ok' ? '数据库连接正常' : '数据库连接失败'}
+            <div class="font-semibold ${isOk ? 'text-green-900' : 'text-red-900'}">
+              ${isOk ? 'Neon 数据库连接正常' : data.status === 'needs_init' ? '数据库已连接，需要初始化' : '数据库连接失败'}
             </div>
+            ${data.hint ? `<p class="mt-1 text-sm text-gray-600">${data.hint}</p>` : ''}
           </div>
         </div>
       `;
-      
-      // Supabase URL
+
       html += `
         <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-          <div class="mb-2 font-semibold text-gray-900">Supabase URL</div>
-          <code class="text-sm text-gray-700">${data.supabaseUrl}</code>
+          <div class="mb-2 font-semibold text-gray-900">数据库类型</div>
+          <code class="text-sm text-gray-700">${data.database || 'unknown'} (${data.connectionSource || 'n/a'})</code>
         </div>
       `;
-      
-      // API Key
+
       html += `
         <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
-          <div class="mb-2 font-semibold text-gray-900">Supabase API Key</div>
-          <div class="${data.supabaseKeyExists ? 'text-green-600' : 'text-red-600'}">
-            ${data.supabaseKeyExists ? '✓ 已设置' : '✗ 未设置'}
+          <div class="mb-2 font-semibold text-gray-900">AUTH_SECRET</div>
+          <div class="${data.authSecretSet ? 'text-green-600' : 'text-orange-600'}">
+            ${data.authSecretSet ? '✓ 已设置' : '⚠ 未设置（使用开发默认值，生产环境请配置）'}
           </div>
         </div>
       `;
-      
-      // 错误详情
+
+      html += `
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+            <div class="text-sm text-gray-500">已发布课程</div>
+            <div class="text-2xl font-bold text-bistu-primary">${data.courseCount ?? 0}</div>
+          </div>
+          <div class="rounded-lg border border-gray-200 bg-gray-50 p-4">
+            <div class="text-sm text-gray-500">公开作品</div>
+            <div class="text-2xl font-bold text-bistu-primary">${data.projectCount ?? 0}</div>
+          </div>
+        </div>
+      `;
+
       if (data.databaseError) {
         html += `
           <div class="rounded-lg border border-red-200 bg-red-50 p-4">
             <div class="mb-2 font-semibold text-red-900">数据库错误</div>
-            <div class="space-y-2 text-sm">
-              <div><span class="font-medium">错误代码:</span> ${data.databaseError.code}</div>
-              <div><span class="font-medium">错误信息:</span> ${data.databaseError.message}</div>
-              ${data.databaseError.hint ? `<div><span class="font-medium">提示:</span> ${data.databaseError.hint}</div>` : ''}
-            </div>
+            <div class="text-sm">${data.databaseError.message}</div>
           </div>
         `;
-        
-        // 显示修复指南
-        fixGuide.classList.remove('hidden');
-        
-        if (data.databaseError.code === '42P01') {
-          fixInstructions.innerHTML = `
-            <div class="space-y-4 text-yellow-900">
-              <p class="font-semibold">❌ 错误: 数据库表不存在 (${data.databaseError.message})</p>
-              
-              <div class="rounded-lg bg-white p-4">
-                <p class="mb-2 font-semibold">✅ 解决方案: 运行数据库迁移</p>
-                <ol class="list-decimal space-y-2 pl-5">
-                  <li>访问 Supabase Dashboard: <a href="https://app.supabase.com" class="text-blue-600 underline" target="_blank">https://app.supabase.com</a></li>
-                  <li>选择您的项目</li>
-                  <li>点击左侧 <strong>"SQL Editor"</strong></li>
-                  <li>点击 <strong>"New Query"</strong></li>
-                  <li>打开本地文件: <code class="rounded bg-gray-200 px-2 py-1">supabase/migrations/20250415000000_gamecode_lab_schema.sql</code></li>
-                  <li>复制全部内容粘贴到 SQL Editor</li>
-                  <li>点击右下角绿色 <strong>"Run"</strong> 按钮</li>
-                  <li>等待 10-15 秒，看到 "Success" 即完成</li>
-                  <li>刷新此页面并重新运行诊断</li>
-                </ol>
-              </div>
 
-              <div class="rounded-lg border-2 border-yellow-400 bg-yellow-100 p-4">
-                <p class="font-semibold">⚠️ 检查 Supabase URL</p>
-                <p class="mt-2">当前使用的 URL: <code class="rounded bg-white px-2 py-1">${data.supabaseUrl}</code></p>
-                <p class="mt-2">请确认这是正确的 Supabase 项目URL。如果不正确，请在 Netlify 中更新环境变量。</p>
-              </div>
-            </div>
-          `;
-        } else {
-          fixInstructions.innerHTML = `
-            <div class="space-y-4 text-yellow-900">
-              <p class="font-semibold">遇到错误: ${data.databaseError.message}</p>
-              <p>请联系管理员或查看 Supabase 日志以获取更多信息。</p>
-            </div>
-          `;
-        }
+        fixGuide.classList.remove('hidden');
+        fixInstructions.innerHTML = `
+          <div class="space-y-4 text-yellow-900">
+            <p class="font-semibold">数据库表可能尚未创建</p>
+            <ol class="list-decimal space-y-2 pl-5">
+              <li>确认 Netlify 已连接 Neon 数据库扩展</li>
+              <li>点击上方「初始化数据库」按钮，或执行 <code class="rounded bg-gray-200 px-2 py-1">POST /api/db/init</code></li>
+              <li>在 Netlify 环境变量中设置 <code class="rounded bg-gray-200 px-2 py-1">AUTH_SECRET</code>（≥32 字符）</li>
+              <li>重新运行诊断</li>
+            </ol>
+          </div>
+        `;
+      } else if (data.status === 'needs_init') {
+        fixGuide.classList.remove('hidden');
+        fixInstructions.innerHTML = `
+          <p class="text-yellow-900">数据库已连接但尚无课程数据，请点击「初始化数据库」。</p>
+        `;
       } else {
         fixGuide.classList.add('hidden');
       }
-      
+
       html += '</div>';
       results.innerHTML = html;
-      
     } catch (error) {
       results.innerHTML = `
         <div class="rounded-lg border border-red-200 bg-red-50 p-4 text-red-900">
@@ -149,6 +133,26 @@ export const prerender = true;
         </div>
       `;
     }
+  }
+
+  button?.addEventListener('click', runDiagnostic);
+
+  initBtn?.addEventListener('click', async () => {
+    initBtn.setAttribute('disabled', 'true');
+    initBtn.textContent = '初始化中...';
+    try {
+      const res = await fetch('/api/db/init', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        await runDiagnostic();
+      } else {
+        results.innerHTML = `<div class="text-red-600">初始化失败: ${data.error}</div>`;
+      }
+    } catch (e) {
+      results.innerHTML = `<div class="text-red-600">初始化失败: ${e.message}</div>`;
+    } finally {
+      initBtn.removeAttribute('disabled');
+      initBtn.textContent = '初始化数据库';
+    }
   });
 </script>
-
