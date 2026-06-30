@@ -114,7 +114,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'demo', onSuc
         </button>
 
         <div className="mb-4 text-center">
-          <img src={BRAND.logo} alt={BRAND.university} className="mx-auto mb-3 h-12 w-12" />
+          <img src={BRAND.logo} alt={BRAND.university} className="brand-logo mx-auto mb-3 h-12 w-12" />
           <h2 className="text-2xl font-bold text-bistu-primary">{BRAND.name}</h2>
           <div className="mt-2 flex justify-center"><ProgramBadge size="sm" /></div>
           <p className="mt-2 text-sm text-gray-600">{BRAND.subtitle}</p>

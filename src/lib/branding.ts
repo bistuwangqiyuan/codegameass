@@ -24,7 +24,7 @@ export const BRAND = {
     bgLight: '#f0f4fa',
     bgGradient: 'linear-gradient(135deg, #f0f4fa 0%, #e8eef8 50%, #fdf2f4 100%)',
   },
-  logo: '/images/bistu/logo.svg',
+  logo: '/images/bistu/bistuwrite.png',
   campusBanner: '/images/bistu/campus-banner.svg',
   contact: {
     email: 'support@bistu.edu.cn',

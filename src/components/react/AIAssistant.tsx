@@ -54,7 +54,7 @@ export default function AIAssistant({ isOpen, onClose }: AIAssistantProps) {
     <div className="fixed bottom-4 right-4 z-50 flex h-[600px] w-[400px] flex-col rounded-xl bg-white shadow-2xl">
       <div className="flex items-center justify-between rounded-t-xl bg-gradient-to-r from-bistu-primary to-bistu-primary-dark px-4 py-3 text-white">
         <div className="flex items-center gap-2">
-          <img src={BRAND.logo} alt="" className="h-6 w-6" />
+          <img src={BRAND.logo} alt="" className="brand-logo h-6 w-6" />
           <h3 className="font-semibold text-sm">{BRAND.aiAssistant}</h3>
         </div>
         <button onClick={onClose} className="text-white/80 hover:text-white"><X size={20} /></button>

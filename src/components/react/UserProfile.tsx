@@ -21,7 +21,7 @@ export default function UserProfile() {
   if (!user) {
     return (
       <div className="rounded-xl border border-bistu-primary/20 bg-white p-6 text-center shadow-md">
-        <img src={BRAND.logo} alt="" className="mx-auto mb-3 h-12 w-12" />
+        <img src={BRAND.logo} alt="" className="brand-logo mx-auto mb-3 h-12 w-12" />
         <div className="mb-2 flex justify-center"><ProgramBadge size="sm" /></div>
         <p className="mb-2 text-gray-700">{BRAND.programLabel} — 欢迎，信息科大的同学！</p>
         <p className="text-sm text-gray-500">使用测试账号登录，开始你的 {BRAND.programTag} 之旅</p>
