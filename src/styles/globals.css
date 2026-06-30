@@ -38,6 +38,10 @@
   img.brand-logo {
     @apply border-0 rounded-full object-contain;
   }
+
+  img.bistu-vi-icon {
+    @apply border-0 object-contain;
+  }
 }
 
 @layer utilities {

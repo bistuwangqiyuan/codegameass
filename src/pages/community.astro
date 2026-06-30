@@ -16,7 +16,11 @@ export const prerender = true;
       </div>
     </div>
 
-    <section class="bg-bistu-hero px-4 py-12 text-white">
+    <section class="relative overflow-hidden px-4 py-12 text-white">
+      <div class="absolute inset-0 -z-10">
+        <img src={BRAND.campusBanner} alt="" class="h-full w-full border-0 object-cover" />
+        <div class="absolute inset-0 bg-bistu-primary/85"></div>
+      </div>
       <div class="mx-auto max-w-7xl text-center">
         <img src={BRAND.logo} alt="" class="brand-logo mx-auto mb-4 h-16 w-16 opacity-90" />
         <div class="mb-4 flex justify-center"><BistuProgramBadge size="md" /></div>

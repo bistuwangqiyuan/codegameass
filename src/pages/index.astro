@@ -2,7 +2,7 @@
 import Layout from '../components/Layout.astro';
 import DemoLoginSection from '../components/react/DemoLoginSection';
 import BistuProgramBadge from '../components/BistuProgramBadge.astro';
-import { pageTitle, BRAND, SCHOOL_INTRO } from '../lib/branding';
+import { pageTitle, BRAND, SCHOOL_INTRO, PLATFORM_FEATURES } from '../lib/branding';
 
 export const prerender = true;
 ---
@@ -71,23 +71,33 @@ export const prerender = true;
         <div class="mb-10 text-center">
           <h2 class="mb-3 text-3xl font-bold text-bistu-primary">{SCHOOL_INTRO.title}</h2>
         </div>
-        <div class="mb-10 grid gap-6 md:grid-cols-2">
-          {SCHOOL_INTRO.paragraphs.map((p) => (
-            <p class="text-gray-700 leading-relaxed">{p}</p>
-          ))}
+        <div class="mb-10 grid items-center gap-8 md:grid-cols-2">
+          <div class="space-y-4">
+            {SCHOOL_INTRO.paragraphs.map((p) => (
+              <p class="leading-relaxed text-gray-700">{p}</p>
+            ))}
+          </div>
+          <img
+            src={BRAND.campusBanner}
+            alt={BRAND.university}
+            class="h-64 w-full rounded-2xl border-0 object-cover shadow-xl md:h-80"
+          />
         </div>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SCHOOL_INTRO.highlights.map((h) => (
             <div class="rounded-xl border border-bistu-primary/10 bg-bistu-bg p-6 text-center">
-              <div class="mb-2 text-3xl">{h.icon}</div>
+              <img src={h.image} alt="" class="bistu-vi-icon mx-auto mb-3 h-14 w-14" />
               <div class="font-bold text-bistu-primary">{h.label}</div>
               <div class="mt-1 text-sm text-gray-600">{h.desc}</div>
             </div>
           ))}
         </div>
-        <div class="mt-8 text-center">
-          <a href={BRAND.website} target="_blank" rel="noopener noreferrer" class="text-bistu-primary font-medium no-underline hover:underline">
+        <div class="mt-8 flex flex-wrap justify-center gap-4 text-center">
+          <a href={BRAND.website} target="_blank" rel="noopener noreferrer" class="font-medium text-bistu-primary no-underline hover:underline">
             访问 {BRAND.university} 官网 →
+          </a>
+          <a href={BRAND.viWebsite} target="_blank" rel="noopener noreferrer" class="font-medium text-bistu-primary no-underline hover:underline">
+            视觉形象识别系统（VI）→
           </a>
         </div>
       </div>
@@ -101,17 +111,10 @@ export const prerender = true;
           <p class="text-lg text-gray-600">专为信息科大大学生设计的创新学习方式</p>
         </div>
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            { icon: '🎮', title: `${BRAND.program} · ${BRAND.programTag}`, desc: '信工实习与 AI 编程相结合的游戏化学习体系：闯关、任务与 Boss 挑战，在实习场景中掌握 Web 开发技能。', color: 'from-bistu-primary to-bistu-primary-light' },
-            { icon: '🤖', title: BRAND.aiAssistant, desc: 'DeepSeek 驱动的 AI 助教，提供实时代码讲解、错误诊断，举例贴近信息科大校园场景。', color: 'from-bistu-accent to-bistu-accent-light' },
-            { icon: '💻', title: '在线代码编辑器', desc: '内置专业编辑器，HTML/CSS/JavaScript 实时预览，在浏览器中完成所有实验。', color: 'from-bistu-primary to-bistu-accent' },
-            { icon: '📚', title: '系统化课程', desc: '从新生欢迎页到综合实战，课程案例融入信息学院与计算机专业学习场景。', color: 'from-bistu-gold to-yellow-600' },
-            { icon: '🏆', title: '成就与排行榜', desc: '解锁成就徽章，与信息科大同学竞争排名，激发学习动力。', color: 'from-bistu-accent to-red-700' },
-            { icon: '🎨', title: '同学作品墙', desc: '分享校园主题 Web 作品，获得点赞与评论，共同进步成长。', color: 'from-bistu-primary-light to-purple-600' },
-          ].map((f) => (
+          {PLATFORM_FEATURES.map((f) => (
             <div class="rounded-2xl bg-white p-8 shadow-lg transition hover:shadow-xl">
-              <div class={`mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${f.color} text-2xl text-white shadow-lg`}>
-                {f.icon}
+              <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-bistu-bg p-2 shadow-md">
+                <img src={f.image} alt="" class="h-10 w-10 object-contain" />
               </div>
               <h3 class="mb-3 text-xl font-bold text-gray-900">{f.title}</h3>
               <p class="text-gray-600">{f.desc}</p>

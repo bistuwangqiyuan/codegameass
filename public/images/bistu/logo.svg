@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
-  <circle cx="60" cy="60" r="56" fill="#003087" stroke="#C8102E" stroke-width="4"/>
-  <circle cx="60" cy="60" r="44" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.9"/>
-  <path d="M60 28 L72 52 L98 52 L77 68 L85 94 L60 78 L35 94 L43 68 L22 52 L48 52 Z" fill="#C8102E" opacity="0.95"/>
-  <text x="60" y="108" text-anchor="middle" fill="#003087" font-family="SimHei, sans-serif" font-size="9" font-weight="bold">·o—'</text>
-</svg>
