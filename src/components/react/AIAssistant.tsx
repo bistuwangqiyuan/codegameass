@@ -13,7 +13,7 @@ export default function AIAssistant({ isOpen, onClose }: AIAssistantProps) {
   const [messages, setMessages] = useState<AIMessage[]>([
     {
       role: 'assistant',
-      content: `你好！我是${BRAND.aiAssistant}，专为${BRAND.shortName}同学提供 Web 编程辅导。无论是 HTML/CSS/JavaScript 还是校园项目（如新生欢迎页、社团活动页），都可以问我！ 😊`,
+      content: `你好！我是${BRAND.aiAssistant}（${BRAND.programLabel}），专为${BRAND.shortName}同学提供 Web 编程辅导。在信工实习与 AI 编程学习中，无论是 HTML/CSS/JavaScript 还是校园项目，都可以问我！ 😊`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -67,7 +67,7 @@ export default function AIAssistant({ isOpen, onClose }: AIAssistantProps) {
               <div className={`max-w-[80%] rounded-lg px-4 py-2 ${message.role === 'user' ? 'bg-bistu-primary text-white' : 'bg-gray-100 text-gray-900'}`}>
                 {message.role === 'assistant' && (
                   <div className="mb-1 flex items-center gap-1 text-xs text-gray-500">
-                    <Sparkles size={12} /><span>{BRAND.shortName} AI</span>
+                    <Sparkles size={12} /><span>{BRAND.programTag}</span>
                   </div>
                 )}
                 <p className="whitespace-pre-wrap text-sm">{message.content}</p>

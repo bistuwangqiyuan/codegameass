@@ -1,6 +1,7 @@
 ---
 import Layout from '../components/Layout.astro';
 import DemoLoginSection from '../components/react/DemoLoginSection';
+import BistuProgramBadge from '../components/BistuProgramBadge.astro';
 import { pageTitle, BRAND } from '../lib/branding';
 ---
 
@@ -8,7 +9,7 @@ import { pageTitle, BRAND } from '../lib/branding';
   <div class="min-h-screen bg-bistu-bg">
     <div id="loginBanner" class="border-b border-bistu-primary/20 bg-bistu-primary/5 px-4 py-3">
       <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
-        <p class="text-sm text-bistu-primary">登录后可发布作品、点赞与评论</p>
+        <p class="text-sm text-bistu-primary">{BRAND.programLabel} — 登录后可发布作品、点赞与评论</p>
         <DemoLoginSection client:load compact />
       </div>
     </div>
@@ -16,9 +17,10 @@ import { pageTitle, BRAND } from '../lib/branding';
     <section class="bg-bistu-hero px-4 py-12 text-white">
       <div class="mx-auto max-w-7xl text-center">
         <img src={BRAND.logo} alt="" class="brand-logo mx-auto mb-4 h-16 w-16 opacity-90" />
+        <div class="mb-4 flex justify-center"><BistuProgramBadge size="md" /></div>
         <h1 class="mb-4 text-4xl font-bold">信息科大同学作品墙</h1>
         <p class="text-xl text-white/90">
-          分享你的校园主题 Web 作品，发现信息科大同学的精彩创意
+          {BRAND.programLabel} 作品展示 — 分享校园主题 Web 作品，发现信息科大同学的精彩创意
         </p>
         <button
           id="createProjectBtn"
@@ -128,7 +130,7 @@ import { pageTitle, BRAND } from '../lib/branding';
           const card = document.createElement('div');
           card.className = 'rounded-xl border border-bistu-primary/10 bg-white p-6 shadow-md transition hover:shadow-lg cursor-pointer';
           card.innerHTML = `
-            <div class="mb-2 text-xs text-bistu-accent font-medium">信息科大 · Web 作品</div>
+            <div class="mb-2 text-xs text-bistu-accent font-medium">{BRAND.programLabel} 作品</div>
             <h3 class="text-xl font-bold mb-2 text-bistu-primary">${project.title}</h3>
             <p class="text-gray-600 mb-4 text-sm">${project.description || ''}</p>
             <div class="flex items-center gap-4 text-sm text-gray-500">

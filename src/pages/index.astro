@@ -1,6 +1,7 @@
 ---
 import Layout from '../components/Layout.astro';
 import DemoLoginSection from '../components/react/DemoLoginSection';
+import BistuProgramBadge from '../components/BistuProgramBadge.astro';
 import { pageTitle, BRAND, SCHOOL_INTRO } from '../lib/branding';
 ---
 
@@ -15,13 +16,16 @@ import { pageTitle, BRAND, SCHOOL_INTRO } from '../lib/branding';
 
       <div class="mx-auto max-w-7xl text-center">
         <img src={BRAND.logo} alt={BRAND.university} class="brand-logo mx-auto mb-6 h-24 w-24 drop-shadow-lg" />
-        <p class="mb-2 text-sm font-medium tracking-wide text-bistu-accent">{BRAND.university}</p>
+        <p class="mb-3 text-sm font-medium tracking-wide text-bistu-accent">{BRAND.university}</p>
+        <div class="mb-4 flex justify-center">
+          <BistuProgramBadge size="md" />
+        </div>
         <h1 class="mb-4 text-4xl font-extrabold text-gray-900 md:text-6xl">
           <span class="text-bistu-gradient">{BRAND.name}</span>
         </h1>
         <p class="mb-2 text-xl font-semibold text-gray-700 md:text-2xl">{BRAND.subtitle}</p>
         <p class="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
-          面向信息科大大学生的游戏化 Web 编程学习平台 · AI 实时辅导 · 闯关挑战 · 作品社区
+          {BRAND.programLabel} — 面向信息科大大学生的游戏化 Web 编程学习平台 · {BRAND.programTag} 实时辅导 · 闯关挑战 · 作品社区
         </p>
 
         <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -96,7 +100,7 @@ import { pageTitle, BRAND, SCHOOL_INTRO } from '../lib/branding';
         </div>
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {[
-            { icon: '🎮', title: '游戏化学习体系', desc: '闯关、任务与 Boss 挑战，获得经验值、金币和成就徽章，让编程学习像玩游戏一样有趣。', color: 'from-bistu-primary to-bistu-primary-light' },
+            { icon: '🎮', title: `${BRAND.program} · ${BRAND.programTag}`, desc: '信工实习与 AI 编程相结合的游戏化学习体系：闯关、任务与 Boss 挑战，在实习场景中掌握 Web 开发技能。', color: 'from-bistu-primary to-bistu-primary-light' },
             { icon: '🤖', title: BRAND.aiAssistant, desc: 'DeepSeek 驱动的 AI 助教，提供实时代码讲解、错误诊断，举例贴近信息科大校园场景。', color: 'from-bistu-accent to-bistu-accent-light' },
             { icon: '💻', title: '在线代码编辑器', desc: '内置专业编辑器，HTML/CSS/JavaScript 实时预览，在浏览器中完成所有实验。', color: 'from-bistu-primary to-bistu-accent' },
             { icon: '📚', title: '系统化课程', desc: '从新生欢迎页到综合实战，课程案例融入信息学院与计算机专业学习场景。', color: 'from-bistu-gold to-yellow-600' },
@@ -149,7 +153,7 @@ import { pageTitle, BRAND, SCHOOL_INTRO } from '../lib/branding';
       <div class="mx-auto max-w-4xl text-center">
         <div class="rounded-3xl bg-bistu-hero p-12 shadow-2xl">
           <h2 class="mb-4 text-3xl font-bold text-white md:text-4xl">准备开始你的编程之旅了吗？</h2>
-          <p class="mb-8 text-xl text-white/90">使用测试账号，立即体验全部功能</p>
+          <p class="mb-8 text-xl text-white/90">{BRAND.programLabel} — 使用测试账号，立即体验全部功能</p>
           <DemoLoginSection client:load compact variant="light" />
           <p class="mt-6 text-sm text-white/75">• 公开测试账号 • 全部课程 • {BRAND.aiAssistant} 全程陪伴</p>
         </div>

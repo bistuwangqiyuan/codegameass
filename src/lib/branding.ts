@@ -1,11 +1,14 @@
-/** 北京信息科技大学 · 信息科大编程实验室 品牌配置 */
+/** 北京信息科技大学 · 信息科大编程实验室 · 信工实习 · AI编程 品牌配置 */
 export const BRAND = {
   name: '信息科大编程实验室',
-  subtitle: '北京信息科技大学 · 大学生 Web 编程学习平台',
+  program: '信工实习',
+  programTag: 'AI编程',
+  programLabel: '信工实习 · AI编程',
+  subtitle: '信工实习 · AI编程 · 北京信息科技大学 Web 编程学习平台',
   university: '北京信息科技大学',
   universityEn: 'Beijing Information Science & Technology University',
   shortName: '信息科大',
-  aiAssistant: '信息科大 AI 编程助教',
+  aiAssistant: '信工实习 AI编程助教',
   website: 'https://www.bistu.edu.cn/',
   viWebsite: 'https://vi.bistu.edu.cn/',
   motto: '勤以为学，信以立身',
@@ -32,17 +35,18 @@ export const SCHOOL_INTRO = {
   title: '关于北京信息科技大学',
   paragraphs: [
     '北京信息科技大学是一所以信息学科为特色的北京市属全日制普通高等学校，办学历史可追溯至1957年。',
-    '学校现有5个校区，信息学科优势突出，计算机、软件工程等专业为大学生提供了扎实的工程实践平台。',
-    '信息科大编程实验室面向全校大学生，通过游戏化闯关与 AI 辅导，帮助你在 Web 前端开发领域快速成长。',
+    '「信工实习 · AI编程」面向信息工程学院及相关专业学生，结合实习场景与 AI 智能辅导，提供 Web 前端编程实践平台。',
+    '信息科大编程实验室通过游戏化闯关与 AI 编程助教，帮助你在信工实习中快速掌握 HTML、CSS、JavaScript 等核心技能。',
   ],
   highlights: [
     { icon: '🏫', label: '1957年办学', desc: '深厚工科底蕴' },
-    { icon: '💻', label: '信息特色', desc: '计算机与软件工程优势学科' },
-    { icon: '🌐', label: '5个校区', desc: '小营·健翔桥·清河·金台路·新校区' },
+    { icon: '💻', label: '信工实习', desc: '信息工程实践教学' },
+    { icon: '🤖', label: 'AI编程', desc: 'AI 助教全程辅导' },
     { icon: '🎓', label: '五育并举', desc: '全面发展育人理念' },
   ],
 } as const;
 
 export function pageTitle(suffix?: string): string {
-  return suffix ? `${suffix} - ${BRAND.name}` : `${BRAND.name} - ${BRAND.subtitle}`;
+  const base = `${BRAND.programLabel} - ${BRAND.name}`;
+  return suffix ? `${suffix} - ${base}` : `${base} - ${BRAND.university}`;
 }

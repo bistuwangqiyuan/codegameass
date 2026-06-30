@@ -5,6 +5,7 @@ import { signInWithEmail, signUpWithEmail, createGuestAccount, signInWithDemoAcc
 import { useUserStore } from '../../lib/store/userStore';
 import { BRAND } from '../../lib/branding';
 import { DEMO_ACCOUNTS, DEMO_PASSWORD, type DemoRole } from '../../lib/demo-accounts';
+import ProgramBadge from './ProgramBadge';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -115,7 +116,8 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'demo', onSuc
         <div className="mb-4 text-center">
           <img src={BRAND.logo} alt={BRAND.university} className="mx-auto mb-3 h-12 w-12" />
           <h2 className="text-2xl font-bold text-bistu-primary">{BRAND.name}</h2>
-          <p className="mt-1 text-sm text-gray-600">{BRAND.subtitle}</p>
+          <div className="mt-2 flex justify-center"><ProgramBadge size="sm" /></div>
+          <p className="mt-2 text-sm text-gray-600">{BRAND.subtitle}</p>
         </div>
 
         <div className="mb-4 flex gap-1 rounded-lg bg-gray-100 p-1">
@@ -139,7 +141,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = 'demo', onSuc
         {mode === 'demo' && (
           <div className="space-y-3">
             <p className="text-sm text-gray-600">
-              使用以下公开测试账号，一键体验闯关、AI 助教、作品社区等全部功能：
+              使用以下公开测试账号，一键体验{BRAND.program} · {BRAND.programTag} 全部功能：
             </p>
             {DEMO_ACCOUNTS.map((account) => {
               const Icon = roleIcons[account.role];

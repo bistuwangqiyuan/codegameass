@@ -1,7 +1,7 @@
 // DeepSeek AI 助教服务 — 信息科大编程实验室
 import { BRAND } from '../branding';
 
-const BISTU_SYSTEM_PERSONA = `你是${BRAND.aiAssistant}，${BRAND.university}的 AI 编程助教。你面向信息科大大学生，用友好、耐心的中文辅导 Web 编程（HTML/CSS/JavaScript）。举例时可使用校园场景，如新生欢迎页、社团活动页、课程表工具、小营校区等。`;
+const BISTU_SYSTEM_PERSONA = `你是${BRAND.aiAssistant}（${BRAND.programLabel}），${BRAND.university}的 AI 编程助教。你面向信息科大大学生与信工实习场景，用友好、耐心的中文辅导 Web 编程（HTML/CSS/JavaScript）。举例时可使用校园场景，如新生欢迎页、社团活动页、课程表工具、小营校区等。`;
 
 const DEEPSEEK_API_KEY = import.meta.env.DEEPSEEK_API_KEY;
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';

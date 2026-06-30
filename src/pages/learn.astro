@@ -2,6 +2,7 @@
 import Layout from '../components/Layout.astro';
 import UserProfile from '../components/react/UserProfile';
 import DemoLoginSection from '../components/react/DemoLoginSection';
+import BistuProgramBadge from '../components/BistuProgramBadge.astro';
 import { pageTitle, BRAND } from '../lib/branding';
 ---
 
@@ -11,7 +12,7 @@ import { pageTitle, BRAND } from '../lib/branding';
     <div id="loginBanner" class="border-b border-bistu-primary/20 bg-bistu-primary/5 px-4 py-3">
       <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3">
         <p class="text-sm text-bistu-primary">
-          <span id="loginBannerText">登录后可保存学习进度、提交挑战、发布作品</span>
+          <span id="loginBannerText">{BRAND.programLabel} — 登录后可保存学习进度、提交挑战、发布作品</span>
         </p>
         <div id="loginBannerActions">
           <DemoLoginSection client:load compact />
@@ -21,7 +22,8 @@ import { pageTitle, BRAND } from '../lib/branding';
 
     <div class="mx-auto max-w-7xl px-4 py-8">
       <div class="mb-6">
-        <h1 class="text-2xl font-bold text-bistu-primary">欢迎，信息科大的同学！</h1>
+        <div class="mb-2"><BistuProgramBadge size="sm" /></div>
+        <h1 class="text-2xl font-bold text-bistu-primary">{BRAND.programLabel} — 欢迎，信息科大的同学！</h1>
         <p class="text-gray-600">{BRAND.subtitle}</p>
       </div>
 
@@ -93,7 +95,7 @@ import { pageTitle, BRAND } from '../lib/branding';
               <h3 class="mb-2 flex items-center gap-2 text-2xl font-bold">
                 <span>🔥</span> 每日挑战
               </h3>
-              <p class="mb-4 text-white/90">完成今日信息科大主题编程挑战，获得额外奖励！</p>
+              <p class="mb-4 text-white/90">完成今日{BRAND.program} · {BRAND.programTag} 主题编程挑战，获得额外奖励！</p>
               <button class="rounded-lg bg-white px-6 py-2 font-semibold text-bistu-primary transition hover:bg-gray-100">
                 接受挑战
               </button>

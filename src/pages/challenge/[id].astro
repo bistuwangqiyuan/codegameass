@@ -1,5 +1,6 @@
 ---
 import Layout from '../../components/Layout.astro';
+import BistuProgramBadge from '../../components/BistuProgramBadge.astro';
 import { pageTitle, BRAND } from '../../lib/branding';
 
 export const prerender = false;
@@ -18,9 +19,10 @@ export const prerender = false;
         </a>
         <div class="h-6 w-px bg-gray-600"></div>
         <img src={BRAND.logo} alt="" class="brand-logo h-8 w-8" />
+        <BistuProgramBadge size="sm" />
         <div>
           <h1 class="text-lg font-bold text-white" id="challengeTitle">加载中...</h1>
-          <p class="text-xs text-gray-400" id="challengeType">{BRAND.shortName} · 编程挑战</p>
+          <p class="text-xs text-gray-400" id="challengeType">{BRAND.programLabel} · 编程挑战</p>
         </div>
       </div>
 

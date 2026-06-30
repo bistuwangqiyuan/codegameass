@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useUserStore } from '../../lib/store/userStore';
 import { getTrialDaysRemaining, isGuestTrialExpired, isDemoAccount } from '../../lib/auth';
 import { BRAND } from '../../lib/branding';
+import ProgramBadge from './ProgramBadge';
 import { User, Star, Coins, Trophy, Flame, Award } from 'lucide-react';
 
 export default function UserProfile() {
@@ -21,8 +22,9 @@ export default function UserProfile() {
     return (
       <div className="rounded-xl border border-bistu-primary/20 bg-white p-6 text-center shadow-md">
         <img src={BRAND.logo} alt="" className="mx-auto mb-3 h-12 w-12" />
-        <p className="mb-2 text-gray-700">欢迎，信息科大的同学！</p>
-        <p className="text-sm text-gray-500">使用测试账号登录，开始你的 Web 编程之旅</p>
+        <div className="mb-2 flex justify-center"><ProgramBadge size="sm" /></div>
+        <p className="mb-2 text-gray-700">{BRAND.programLabel} — 欢迎，信息科大的同学！</p>
+        <p className="text-sm text-gray-500">使用测试账号登录，开始你的 {BRAND.programTag} 之旅</p>
       </div>
     );
   }
@@ -49,7 +51,7 @@ export default function UserProfile() {
               <span className="rounded-full bg-bistu-accent px-2 py-0.5 text-xs font-medium">测试账号</span>
             )}
           </div>
-          <p className="text-sm text-white/80">{user.title} · {BRAND.shortName}</p>
+          <p className="text-sm text-white/80">{user.title} · {BRAND.programLabel}</p>
           {isGuest && !isDemo && !isExpired && (
             <p className="mt-1 text-xs text-yellow-200">试用剩余 {trialDays} 天</p>
           )}

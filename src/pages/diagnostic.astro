@@ -1,5 +1,6 @@
 ---
 import Layout from '../components/Layout.astro';
+import BistuProgramBadge from '../components/BistuProgramBadge.astro';
 import { pageTitle, BRAND } from '../lib/branding';
 ---
 
@@ -9,8 +10,9 @@ import { pageTitle, BRAND } from '../lib/branding';
       <div class="mb-6 flex items-center gap-4">
         <img src={BRAND.logo} alt="" class="brand-logo h-12 w-12" />
         <div>
+          <div class="mb-2"><BistuProgramBadge size="sm" /></div>
           <h1 class="text-3xl font-bold text-bistu-primary">系统诊断</h1>
-          <p class="text-gray-600">{BRAND.name} · 运行环境检测</p>
+          <p class="text-gray-600">{BRAND.programLabel} · {BRAND.name} · 运行环境检测</p>
         </div>
       </div>
       <div class="rounded-2xl bg-white p-8 shadow-lg">
