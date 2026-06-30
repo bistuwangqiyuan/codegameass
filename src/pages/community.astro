@@ -3,6 +3,8 @@ import Layout from '../components/Layout.astro';
 import DemoLoginSection from '../components/react/DemoLoginSection';
 import BistuProgramBadge from '../components/BistuProgramBadge.astro';
 import { pageTitle, BRAND } from '../lib/branding';
+
+export const prerender = true;
 ---
 
 <Layout title={pageTitle('作品社区')} currentPath="/community" fullWidth>

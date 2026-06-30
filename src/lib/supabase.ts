@@ -1,13 +1,20 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+function initSupabase(): SupabaseClient {
+  if (supabaseUrl && supabaseAnonKey) {
+    return createClient(supabaseUrl, supabaseAnonKey);
+  }
+  // 避免 SSR 因缺少环境变量直接 500；客户端功能在配置完成后可用
+  console.warn('Missing PUBLIC_SUPABASE_URL or PUBLIC_SUPABASE_ANON_KEY');
+  return createClient('https://placeholder.supabase.co', 'placeholder-anon-key', {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = initSupabase();
 
 // 类型定义
 export type UserProfile = {
