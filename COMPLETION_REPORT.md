@@ -659,8 +659,8 @@ npm run build
 - QUICK_START.md
 
 **联系方式**:
-- 📧 support@gamecodelab.com
-- 💬 Discord 社区
+- 📧 mingxinai@agentmail.to
+- 📧 13426086861@139.com
 - 🐛 GitHub Issues
 
 ---

@@ -50,7 +50,8 @@ export const BRAND = {
   favicon: BISTU_IMAGES.favicon,
   images: BISTU_IMAGES,
   contact: {
-    email: 'support@bistu.edu.cn',
+    email: 'mingxinai@agentmail.to',
+    emailAlt: '13426086861@139.com',
   },
 } as const;
 

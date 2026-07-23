@@ -362,9 +362,9 @@ export default defineConfig({
 
 如遇到问题：
 
-1. 查看 [GitHub Issues](https://github.com/yourusername/gamecode-lab/issues)
-2. 加入 [Discord 社区](https://discord.gg/gamecodelab)
-3. 发送邮件到 support@gamecodelab.com
+1. 查看 [GitHub Issues](https://github.com/bistuwangqiyuan/codegameass/issues)
+2. 发送邮件到 mingxinai@agentmail.to
+3. 发送邮件到 13426086861@139.com
 
 ---
 

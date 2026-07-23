@@ -388,10 +388,9 @@ npm run preview
 
 ## 📞 联系方式
 
-- **官网**: https://gamecodelab.com
-- **邮箱**: contact@gamecodelab.com
-- **Twitter**: @GameCodeLab
-- **Discord**: [加入社区](https://discord.gg/gamecodelab)
+- **在线地址**: https://codegameass.netlify.app
+- **邮箱**: mingxinai@agentmail.to
+- **邮箱**: 13426086861@139.com
 
 ---
 

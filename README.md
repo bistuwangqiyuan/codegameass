@@ -1,74 +1,64 @@
-# Astro Supabase Starter
+# 信息科大编程实验室（GameCode Lab）
 
-![Astro Supabase Starter Preview](astro-supabase-starter-preview.png)
+**信工实习 · AI编程** — 北京信息科技大学 Web 编程游戏化学习平台。
 
-**View demo:** [https://astro-supabase-starter.netlify.app/](https://astro-supabase-starter.netlify.app/)
+**在线访问**: [https://codegameass.netlify.app](https://codegameass.netlify.app)
 
-The Astro Supabase starter demonstrates how to integrate **Supabase** into an Astro project deployed on Netlify.
+## 项目简介
 
-## Deploying to Netlify
+面向信息工程学院及相关专业学生的游戏化 Web 编程学习平台，结合实习场景与 AI 智能辅导：
 
-If you click "Deploy to Netlify" button, it will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Netlify.
+- 🎮 **游戏化闯关**：课程关卡、每日挑战、Boss 战、经验值与金币体系
+- 🤖 **AI 编程助教**：DeepSeek 驱动，实时代码讲解与错误诊断
+- 💻 **在线代码编辑器**：HTML / CSS / JavaScript 实时预览
+- 🏆 **成就与排行榜**：徽章解锁、同学间竞争排名
+- 🖼️ **作品社区**：分享作品，点赞评论互动
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/astro-supabase-starter&fullConfiguration=true)
+## 技术栈
 
-## Astro Commands
+| 层次 | 技术 |
+| :--- | :--- |
+| 前端框架 | Astro 5 (SSR) + React 18 |
+| 样式 | Tailwind CSS 4 |
+| 数据库 | Neon (Serverless PostgreSQL) |
+| 认证 | 自建 JWT（jose + bcryptjs） |
+| AI | DeepSeek API |
+| 部署 | Netlify |
 
-All commands are run from the root of the project, from a terminal:
+## 本地开发
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## Developing Locally
-
-| Prerequisites                                                                |
-| :--------------------------------------------------------------------------- |
-| [Node.js](https://nodejs.org/) v18.14+                                       |
-| (optional) [nvm](https://github.com/nvm-sh/nvm) for Node version management  |
-| [Netlify account](https://netlify.com/)                                      |
-| [Netlify CLI](https://docs.netlify.com/cli/get-started/).                    |
-| [Supabase account](https://supabase.com/)                                    |
-
-### Set up the database
-
-To use this template, you’ll need to set up and seed a new Supabase database.
-
-1. Create a new Supabase project.
-2. Run the SQL commands found in the `supabase/migrations` directory in the Supabase UI.
-3. To seed the database with data, you can import the contents of the `supabase/seed.csv` file in the Supabase UI.
-
-ℹ️ _Note: This template was created to be used with the Supabase extension for Netlify. If you don’t wish to use the Netlify Supabase extension, you will need to set the `SUPABASE_DATABASE_URL` and `SUPABASE_ANON_KEY` environment variables in the `.env` file._
-
-### Install and run locally
-
-1. Clone this repository, then run `npm install` in its root directory.
-
-2. For the starter to have full functionality locally, please ensure you have an up-to-date version of Netlify CLI. Run:
-
-```
-npm install netlify-cli@latest -g
+```bash
+npm install
+npm run dev        # 本地开发服务器 http://localhost:4321
+npm run build      # 构建（含 astro check 类型检查）
+npm run preview    # 预览构建产物
 ```
 
-3. Link your local repository to the deployed Netlify site. This will ensure you're using the same runtime version for both local development and your deployed site.
+### 环境变量
 
-```
-netlify link
-```
+参考 `.env-example`，主要包括：
 
-4. Then, run the Astro.js development server via Netlify CLI:
+- `NETLIFY_DATABASE_URL` — Neon 数据库连接串（Netlify Neon 扩展自动注入）
+- `AUTH_SECRET` — JWT 签名密钥（≥32 字符随机字符串）
+- `DEEPSEEK_API_KEY` — AI 助教所需的 DeepSeek API 密钥
 
-```
-netlify dev --target-port 4321
-```
+### 数据库初始化
 
-If your browser doesn't navigate to the site automatically, visit [localhost:8888](http://localhost:8888).
+部署后访问 `POST /api/db/init` 即可自动执行迁移、创建演示账号并填充示例数据。
 
-## Support
+## 测试账号
 
-If you get stuck along the way, get help in our [support forums](https://answers.netlify.com/).
+首页公开展示三个测试账号（学生 / 教师 / 管理员），密码均为 `BistuDemo2026`，无需注册即可体验全部功能。
+
+## 部署
+
+推送到 `main` 分支后由 Netlify 自动构建并部署。
+
+## 联系方式
+
+- 📧 mingxinai@agentmail.to
+- 📧 13426086861@139.com
+
+## 许可
+
+详见 [LICENSE](./LICENSE)。本平台仅供教学演示与学习体验使用。

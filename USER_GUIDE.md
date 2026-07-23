@@ -469,15 +469,9 @@ A: 实时更新。每次完成挑战或获得 XP 后，排名会立即刷新。
 
 ## 🤝 获取帮助
 
-### 在线帮助中心
-访问 [帮助中心](https://gamecodelab.com/help)
-
-### 社区论坛
-加入 [Discord 社区](https://discord.gg/gamecodelab)
-
 ### 联系我们
-- 📧 邮箱: support@gamecodelab.com
-- 💬 在线客服: 周一至周五 9:00-18:00
+- 📧 邮箱: mingxinai@agentmail.to
+- 📧 邮箱: 13426086861@139.com
 
 ---
 

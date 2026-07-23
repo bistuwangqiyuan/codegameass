@@ -39,6 +39,15 @@ import BistuProgramBadge from './BistuProgramBadge.astro';
           <li>校区：{BRAND.campuses.join(' · ')}</li>
           <li>{BRAND.program} 与 {BRAND.programTag} 结合的 Web 编程实践平台</li>
         </ul>
+        <h3 class="mb-3 mt-6 font-semibold">联系方式</h3>
+        <ul class="space-y-2 text-sm text-white/80">
+          <li>
+            📧 <a href={`mailto:${BRAND.contact.email}`} class="text-white/80 no-underline hover:text-white hover:underline">{BRAND.contact.email}</a>
+          </li>
+          <li>
+            📧 <a href={`mailto:${BRAND.contact.emailAlt}`} class="text-white/80 no-underline hover:text-white hover:underline">{BRAND.contact.emailAlt}</a>
+          </li>
+        </ul>
       </div>
     </div>
 

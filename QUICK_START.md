@@ -268,8 +268,7 @@ npm run
 
 - 💬 查看文档: [README.md](./README_GameCodeLab.md)
 - 🐛 提交问题: GitHub Issues
-- 💡 交流讨论: Discord 社区
-- 📧 联系我们: support@gamecodelab.com
+- 📧 联系我们: mingxinai@agentmail.to / 13426086861@139.com
 
 ---
 
